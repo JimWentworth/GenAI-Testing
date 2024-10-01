@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bloom's Taxonomy Verb Sorter</title>
+    <title>Bloom's Taxonomy Verb Selector</title>
     <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
@@ -119,7 +119,7 @@
             "Create": "Creating", "Design": "Creating", "Develop": "Creating", "Compose": "Creating", "Formulate": "Creating"
         };
 
-        function TaxonomyVerbSorter() {
+        function TaxonomyVerbSelector() {
             const [availableVerbs, setAvailableVerbs] = React.useState(Object.keys(verbsWithLevels).sort());
             const [sortedVerbs, setSortedVerbs] = React.useState({});
             const [checkResults, setCheckResults] = React.useState({});
@@ -190,7 +190,7 @@
 
             return (
                 <div className="app">
-                    <h1>Bloom's Taxonomy Verb Sorter</h1>
+                    <h1>Bloom's Taxonomy Verb Selector</h1>
                     <div 
                         className="verb-container" 
                         onDragOver={onDragOver}
@@ -240,7 +240,7 @@
             );
         }
 
-        ReactDOM.render(<TaxonomyVerbSorter />, document.getElementById('root'));
+        ReactDOM.render(<TaxonomyVerbSelector />, document.getElementById('root'));
     </script>
 </body>
 </html>
