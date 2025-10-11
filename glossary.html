@@ -483,6 +483,166 @@
           'Policies and practices for managing how data is collected, stored, and used throughout the AI lifecycle, ensuring compliance and privacy.',
         tags: ['Policy'],
         examples: ['Restricting training data to approved sources']
+      },
+      {
+        term: 'Synthetic Data',
+        category: 'training',
+        definition:
+          'Artificially generated data used to augment or replace real-world datasets, often for privacy preservation or to balance scarce examples.',
+        tags: ['Data'],
+        examples: ['Creating mock customer conversations for fine-tuning']
+      },
+      {
+        term: 'Model Drift',
+        category: 'ops',
+        definition:
+          'A gradual degradation in model performance that occurs when real-world data diverges from the data the model was trained on.',
+        tags: ['Monitoring'],
+        examples: ['Support topics shifting after a product launch']
+      },
+      {
+        term: 'Prompt Injection',
+        category: 'safety',
+        definition:
+          'An adversarial technique where a user crafts inputs that override instructions or extract sensitive information from a model.',
+        tags: ['Attack'],
+        examples: ['Embedding “ignore previous instructions” in user content']
+      },
+      {
+        term: 'Content Filtering',
+        category: 'safety',
+        definition:
+          'Automated systems that detect and block disallowed outputs before they reach end users or downstream applications.',
+        tags: ['Moderation'],
+        examples: ['Filtering hate speech from generated text']
+      },
+      {
+        term: 'Explainability',
+        category: 'safety',
+        definition:
+          'Techniques and tools that help interpret why a model produced a certain output, supporting trust, auditing, and debugging.',
+        tags: ['Transparency'],
+        examples: ['Highlighting influential tokens in a response']
+      },
+      {
+        term: 'Chain-of-Thought Prompting',
+        category: 'ops',
+        definition:
+          'Prompting strategies that encourage models to articulate intermediate reasoning steps, often improving performance on complex tasks.',
+        tags: ['Reasoning'],
+        examples: ['“Let’s think step by step” in math problem prompts']
+      },
+      {
+        term: 'Function Calling',
+        category: 'ops',
+        definition:
+          'A capability where the model returns structured arguments that let applications invoke external functions or APIs reliably.',
+        tags: ['Integration'],
+        examples: ['LLM returning JSON arguments to query a database']
+      },
+      {
+        term: 'Knowledge Cutoff',
+        category: 'models',
+        definition:
+          'The most recent point in time covered by a model’s training data, beyond which it may lack information about events or updates.',
+        tags: ['Limitations'],
+        examples: ['Model unable to reference policies enacted after 2023']
+      },
+      {
+        term: 'Dataset Curation',
+        category: 'training',
+        definition:
+          'The process of selecting, cleaning, and annotating data to ensure quality, diversity, and compliance before training a model.',
+        tags: ['Preparation'],
+        examples: ['Removing personally identifiable information from logs']
+      },
+      {
+        term: 'Evaluation Harness',
+        category: 'ops',
+        definition:
+          'A standardized framework for running benchmark suites and regression tests to measure model performance over time.',
+        tags: ['Testing'],
+        examples: ['Automating weekly model comparisons on held-out tasks']
+      },
+      {
+        term: 'Safety Classifier',
+        category: 'safety',
+        definition:
+          'A specialized model trained to detect unsafe or policy-violating content, often used in tandem with generative systems.',
+        tags: ['Moderation'],
+        examples: ['Classifying violent content before release']
+      },
+      {
+        term: 'Usage Analytics',
+        category: 'ops',
+        definition:
+          'Telemetry and reporting that track how generative AI features are used, informing iteration, capacity planning, and governance.',
+        tags: ['Metrics'],
+        examples: ['Dashboard of daily active assistants and tokens used']
+      },
+      {
+        term: 'Cost per Token',
+        category: 'ops',
+        definition:
+          'A pricing metric that breaks down inference spend by the number of tokens processed, helping teams forecast and control expenses.',
+        tags: ['Finance'],
+        examples: ['Budgeting a chatbot rollout using per-token pricing']
+      },
+      {
+        term: 'API Rate Limit',
+        category: 'ops',
+        definition:
+          'The maximum number of requests or tokens an API allows within a given timeframe, used to ensure fair usage and system stability.',
+        tags: ['Quota'],
+        examples: ['Throttling requests after exceeding 10,000 tokens per minute']
+      },
+      {
+        term: 'Self-Critique',
+        category: 'training',
+        definition:
+          'A technique where models evaluate or refine their own outputs, often through iterative prompting or specialized training loops.',
+        tags: ['Iterative'],
+        examples: ['Model reviewing its draft and providing revisions']
+      },
+      {
+        term: 'Conversational Memory',
+        category: 'ops',
+        definition:
+          'Mechanisms that store and recall prior interactions so the assistant can maintain context across turns or sessions.',
+        tags: ['Context'],
+        examples: ['Persisting user preferences for future chats']
+      },
+      {
+        term: 'Model Distillation',
+        category: 'training',
+        definition:
+          'Compressing a large teacher model into a smaller student model that retains similar capabilities but is cheaper to deploy.',
+        tags: ['Optimization'],
+        examples: ['Training a compact model using teacher-generated labels']
+      },
+      {
+        term: 'Diffusion Model',
+        category: 'models',
+        definition:
+          'A generative approach that iteratively denoises random noise into coherent samples, widely used for high-quality image synthesis.',
+        tags: ['Imaging'],
+        examples: ['Stable Diffusion creating photorealistic scenes']
+      },
+      {
+        term: 'ControlNet',
+        category: 'models',
+        definition:
+          'An extension for diffusion models that injects structural guidance, such as poses or edge maps, to better control generated outputs.',
+        tags: ['Guidance'],
+        examples: ['Applying pose controls to tailor character images']
+      },
+      {
+        term: 'Text-to-Speech (TTS)',
+        category: 'models',
+        definition:
+          'Models that convert written text into natural-sounding audio, enabling voice interfaces and accessibility features.',
+        tags: ['Audio'],
+        examples: ['Reading generated responses aloud in a virtual agent']
       }
     ];
 
