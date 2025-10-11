@@ -303,7 +303,6 @@
         <div class="filter-group" role="group" aria-label="Filter glossary by category">
           <button class="filter-chip active" data-category="all" type="button">All</button>
           <button class="filter-chip" data-category="models" type="button">Models</button>
-          <button class="filter-chip" data-category="training" type="button">Training</button>
           <button class="filter-chip" data-category="safety" type="button">Safety</button>
           <button class="filter-chip" data-category="ops" type="button">Operations</button>
         </div>
@@ -341,20 +340,12 @@
         examples: ['GPT-4o with vision', 'CLIP']
       },
       {
-        term: 'Fine-tuning',
-        category: 'training',
+        term: 'Prompt',
+        category: 'ops',
         definition:
-          'The process of continuing to train a pre-trained model on a narrower dataset so it specializes in a particular task or domain.',
-        tags: ['Adaptation'],
-        examples: ['Fine-tuning an LLM on support tickets']
-      },
-      {
-        term: 'Retrieval-Augmented Generation (RAG)',
-        category: 'training',
-        definition:
-          'An approach that enhances model outputs by retrieving relevant documents from an external knowledge base and conditioning the model on that context.',
-        tags: ['Context'],
-        examples: ['Chatbots citing internal policies']
+          'The text or instructions a person provides to an AI model to describe the desired task, context, or response.',
+        tags: ['Input'],
+        examples: ['“Summarize this meeting in three bullet points.”']
       },
       {
         term: 'Prompt Engineering',
@@ -389,6 +380,14 @@
         examples: ['Blocking disallowed content categories']
       },
       {
+        term: 'Bias',
+        category: 'safety',
+        definition:
+          'Systematic tendencies in data or models that lead to unfair or unbalanced outputs affecting certain people, groups, or perspectives.',
+        tags: ['Fairness'],
+        examples: ['Model translating professions with gender stereotypes']
+      },
+      {
         term: 'Red Teaming',
         category: 'safety',
         definition:
@@ -421,14 +420,6 @@
         examples: ['128k-token context for extended transcripts']
       },
       {
-        term: 'Embedding',
-        category: 'training',
-        definition:
-          'A numerical representation of data (text, images, etc.) in a high-dimensional space that captures semantic similarity.',
-        tags: ['Vector'],
-        examples: ['Using text embeddings for semantic search']
-      },
-      {
         term: 'Latency',
         category: 'ops',
         definition:
@@ -448,17 +439,9 @@
         term: 'Alignment',
         category: 'safety',
         definition:
-          'The process of ensuring AI behavior is aligned with human values, intentions, and policies through techniques like RLHF and feedback loops.',
+          'The process of ensuring AI behavior is aligned with human values, intentions, and policies through techniques like collecting human feedback and applying oversight.',
         tags: ['Ethics'],
         examples: ['Collecting human feedback on model outputs']
-      },
-      {
-        term: 'Reinforcement Learning from Human Feedback (RLHF)',
-        category: 'training',
-        definition:
-          'A technique that trains a reward model based on human preferences and uses it to fine-tune the base model, improving helpfulness and safety.',
-        tags: ['Feedback'],
-        examples: ['Ranking model outputs to create preference datasets']
       },
       {
         term: 'Zero-shot Prompting',
@@ -483,14 +466,6 @@
           'Policies and practices for managing how data is collected, stored, and used throughout the AI lifecycle, ensuring compliance and privacy.',
         tags: ['Policy'],
         examples: ['Restricting training data to approved sources']
-      },
-      {
-        term: 'Synthetic Data',
-        category: 'training',
-        definition:
-          'Artificially generated data used to augment or replace real-world datasets, often for privacy preservation or to balance scarce examples.',
-        tags: ['Data'],
-        examples: ['Creating mock customer conversations for fine-tuning']
       },
       {
         term: 'Model Drift',
@@ -549,14 +524,6 @@
         examples: ['Model unable to reference policies enacted after 2023']
       },
       {
-        term: 'Dataset Curation',
-        category: 'training',
-        definition:
-          'The process of selecting, cleaning, and annotating data to ensure quality, diversity, and compliance before training a model.',
-        tags: ['Preparation'],
-        examples: ['Removing personally identifiable information from logs']
-      },
-      {
         term: 'Evaluation Harness',
         category: 'ops',
         definition:
@@ -597,28 +564,12 @@
         examples: ['Throttling requests after exceeding 10,000 tokens per minute']
       },
       {
-        term: 'Self-Critique',
-        category: 'training',
-        definition:
-          'A technique where models evaluate or refine their own outputs, often through iterative prompting or specialized training loops.',
-        tags: ['Iterative'],
-        examples: ['Model reviewing its draft and providing revisions']
-      },
-      {
         term: 'Conversational Memory',
         category: 'ops',
         definition:
           'Mechanisms that store and recall prior interactions so the assistant can maintain context across turns or sessions.',
         tags: ['Context'],
         examples: ['Persisting user preferences for future chats']
-      },
-      {
-        term: 'Model Distillation',
-        category: 'training',
-        definition:
-          'Compressing a large teacher model into a smaller student model that retains similar capabilities but is cheaper to deploy.',
-        tags: ['Optimization'],
-        examples: ['Training a compact model using teacher-generated labels']
       },
       {
         term: 'Diffusion Model',
