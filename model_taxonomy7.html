@@ -8,7 +8,7 @@
   :root{
     --uiuc-navy:#13294B; --uiuc-orange:#E84A27;
     --ink:#1f2937; --muted:#6b7280; --bg:#f8fafc; --card:#ffffff; --ring:#e5e7eb;
-    --blue:#2563eb; --green:#16a34a; --red:#dc2626; --amber:#f59e0b; --radius:16px;
+    --blue:#2563eb; --green:#16a34a; --red:#dc2626; --amber:#f59e0b;
   }
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
@@ -23,8 +23,7 @@
   .tab.active{border-color:var(--uiuc-navy);color:var(--uiuc-navy);box-shadow:0 -1px 0 #fff inset}
   .panel{display:none}
   .panel.active{display:block}
-  /* Default visible if JS doesn't run */
-  .panel.default-visible{display:block}
+  .panel.default-visible{display:block} /* visible if JS fails */
 
   .card{background:var(--card);border:1px solid var(--ring);border-radius:16px;box-shadow:0 1px 2px rgb(0 0 0 / 6%)}
   .card h2{margin:0;padding:16px 16px 0 16px;font-size:18px}
@@ -40,8 +39,6 @@
   .lenscard .pills{display:flex;flex-wrap:wrap;gap:8px}
   .pill{border:1px solid var(--ring);background:#fff;border-radius:999px;padding:6px 10px;font-size:13px;cursor:pointer}
   .pill:hover{border-color:var(--uiuc-orange)}
-  /* native title tooltip only */
-
   .dot{width:10px;height:10px;border-radius:999px;display:inline-block}
   .blue{background:var(--blue)} .green{background:var(--green)} .amber{background:var(--amber)} .red{background:var(--red)}
 
@@ -68,8 +65,9 @@
   .choice.correct{border-color:#16a34a;background:#ecfdf5}
   .choice.incorrect{border-color:#dc2626;background:#fef2f2}
   .btn{display:inline-block;border:1px solid var(--uiuc-navy);color:#fff;background:var(--uiuc-navy);border-radius:999px;padding:8px 14px;cursor:pointer}
-  .btn.alt{background:#fff;color:var(--uiuc-navy)}
   .score{font-weight:700}
+  /* Debug banner */
+  #debug-banner{font:14px system-ui; color:#9a3412; background:#fff7ed; border:1px solid #fed7aa; border-radius:8px; padding:8px 12px; display:none; margin-bottom:12px;}
 </style>
 </head>
 <body>
@@ -78,6 +76,8 @@
     <h1>AI Models: Four Lenses</h1>
     <p>A teaching tool to separate the general idea of an <em>AI model</em> from a useful taxonomy: <strong>Training</strong>, <strong>Architecture</strong>, <strong>Family</strong>, and <strong>Lineage</strong>. Tabs for an overview, a unified table (with CSV export), and a quiz focused on modalities & real tasks.</p>
   </header>
+
+  <div id="debug-banner"></div>
 
   <!-- TABS -->
   <nav class="tabs" id="tabs">
@@ -112,7 +112,7 @@
         </select>
         <div class="seg" id="lens-filters"></div>
         <button id="export-current">Export CSV (current view)</button>
-        <button id="export-all" class="alt">Export CSV (entire dataset)</button>
+        <button id="export-all">Export CSV (entire dataset)</button>
       </div>
       <div style="overflow:auto; max-height: 520px;">
         <table id="data-table">
@@ -150,6 +150,37 @@
 </div>
 
 <script>
+/* ---------------- Utilities ---------------- */
+const $  = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+
+function el(tag, attrs={}, ...children){
+  const n=document.createElement(tag);
+  for(const [k,v] of Object.entries(attrs)){
+    if(k==="class") n.className=v;
+    else if(k==="html") n.innerHTML=v;
+    else n.setAttribute(k,v);
+  }
+  children.flat().forEach(c=>n.append(c));
+  return n;
+}
+function debounce(fn,ms=200){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms)}}
+function shuffle(x){ const a=[...x]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a; }
+function pick(n,arr){ const a=[...arr]; const out=[]; while(out.length<n && a.length){ out.push(a.splice(Math.floor(Math.random()*a.length),1)[0]); } return out; }
+
+/* Firefox/extension-safe hash updates */
+function safeReplaceHash(name){
+  try {
+    if (typeof history?.replaceState === "function") {
+      history.replaceState(null,"",`#${name}`);
+    }
+  } catch (e) {
+    console.warn("Hash update blocked:", e);
+    const dbg = $("#debug-banner");
+    if (dbg){ dbg.style.display = "block"; dbg.textContent = "Note: a browser extension blocked a URL update; app continues in safe mode."; }
+  }
+}
+
 /* ---------------- DATA (edit me) ----------------
    Each term is [term, explain, examples, modality]
 */
@@ -291,7 +322,7 @@ const DATA = {
         { name:"01.AI", color:"green", terms:[
           ["Yi 34B → Yi-1.5","Open large models tuned for quality.","","Text"]
         ]},
-        { name:"Stable Diffusion (Stability/CompVis)", color:"blue", terms:[
+        { name:"Stable Diffusion (Stability/CompVis)", color:"#2563eb", terms:[
           ["SD 1.x → SD 2.x → SDXL → SD3","Latent diffusion, larger backbones.","Better text rendering","Image"]
         ]},
         { name:"Midjourney (closed)", color:"amber", terms:[
@@ -309,33 +340,7 @@ const DATA = {
   }
 };
 
-/* ---------------- Helpers ---------------- */
-const $ = s=>document.querySelector(s);
-const $$ = s=>Array.from(document.querySelectorAll(s));
-function el(tag, attrs={}, ...children){
-  const n=document.createElement(tag);
-  for(const [k,v] of Object.entries(attrs)){
-    if(k==="class") n.className=v;
-    else if(k==="html") n.innerHTML=v;
-    else n.setAttribute(k,v);
-  }
-  children.flat().forEach(c=>n.append(c));
-  return n;
-}
-function debounce(fn,ms=200){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms)}}
-function shuffle(x){ const a=[...x]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a; }
-function pick(n,arr){ const a=[...arr]; const out=[]; while(out.length<n && a.length){ out.push(a.splice(Math.floor(Math.random()*a.length),1)[0]); } return out; }
-
-/* ---------------- Tabs ---------------- */
-function goTab(name){
-  const tabs=$$("#tabs .tab"); const panels=$$(".panel");
-  tabs.forEach(b=>b.classList.toggle("active", b.dataset.tab===name));
-  panels.forEach(p=>p.classList.toggle("active", p.id===`panel-${name}`));
-  if(name==="table"){ const t=$("#table-search"); t && t.focus(); }
-  history.replaceState(null,"",`#${name}`);
-}
-
-/* ---------------- Overview ---------------- */
+/* ---------------- Derived rows ---------------- */
 function lensRows(){
   const rows=[];
   Object.entries(DATA.lenses).forEach(([lens,meta])=>{
@@ -349,6 +354,15 @@ function lensRows(){
 }
 const ALL_ROWS = lensRows();
 
+/* ---------------- Tabs ---------------- */
+function goTab(name){
+  $$("#tabs .tab").forEach(b=>b.classList.toggle("active", b.dataset.tab===name));
+  $$(".panel").forEach(p=>p.classList.toggle("active", p.id===`panel-${name}`));
+  if (name==="table") { $("#table-search")?.focus(); }
+  safeReplaceHash(name);
+}
+
+/* ---------------- Overview ---------------- */
 function renderOverview(){
   const grid=$("#overview-grid"); if(!grid) return;
   grid.innerHTML="";
@@ -374,4 +388,220 @@ function renderOverview(){
     });
 
     const pills=el("div",{class:"pills"});
-    topTerms.forEa
+    topTerms.forEach(r=>{
+      const p=el("button",{class:"pill",title:`${r.explain} • Modality: ${r.mod}`}, r.term);
+      p.addEventListener("click",()=>{
+        goTab("table");
+        const ts=$("#table-search"); if(ts){ ts.value=r.term; renderTable(); }
+      });
+      pills.append(p);
+    });
+
+    card.append(head,desc,actions,pills);
+    grid.append(card);
+  });
+}
+
+/* ---------------- Table ---------------- */
+const sortState=[];
+function renderLensFilters(){
+  const box=$("#lens-filters"); if(!box) return;
+  box.innerHTML="";
+  Object.keys(DATA.lenses).forEach(name=>{
+    const c=el("input",{type:"checkbox",value:name,checked:true});
+    const lab=el("label",{},c," "+name);
+    c.addEventListener("change",renderTable);
+    box.append(lab);
+  });
+}
+function tableRows(){
+  return ALL_ROWS.map(r=>({lens:r.lens,category:r.category,term:r.term,explain:r.explain,examples:r.examples,modality:r.mod}));
+}
+let TABLE_DATA = tableRows();
+
+function currentView(){
+  const ts=$("#table-search"); const mf=$("#modality-filter");
+  const q=(ts?.value||"").trim().toLowerCase();
+  const lensEnabled=$$("#lens-filters input[type=checkbox]:checked").map(c=>c.value);
+  const modSel=mf?.value||"";
+  let view=TABLE_DATA.filter(r=>lensEnabled.includes(r.lens));
+  if(modSel) view=view.filter(r=>r.modality===modSel);
+  if(q) view=view.filter(r=>Object.values(r).join(" ").toLowerCase().includes(q));
+  let sorted=[...view];
+  if(sortState.length){
+    sorted.sort((a,b)=>{
+      for(const {key,dir} of sortState){
+        const av=(a[key]??"").toString().toLowerCase();
+        const bv=(b[key]??"").toString().toLowerCase();
+        if(av<bv) return dir==="asc"?-1:1;
+        if(av>bv) return dir==="asc"?1:-1;
+      } return 0;
+    });
+  }
+  return sorted;
+}
+
+function renderTable(){
+  const tb=$("#data-table tbody"); if(!tb) return;
+  tb.innerHTML="";
+  currentView().forEach(r=>{
+    const tr=el("tr",{},
+      el("td",{},r.lens),
+      el("td",{},r.category),
+      el("td",{},el("span",{class:"tag"},r.term)),
+      el("td",{},el("span",{class:"mod"},r.modality)),
+      el("td",{},r.examples||"—"),
+      el("td",{},r.explain)
+    ); tb.append(tr);
+  });
+}
+
+function initTable(){
+  renderLensFilters();
+  $$("#data-table thead th").forEach(th=>{
+    th.addEventListener("click",e=>{
+      const key=th.getAttribute("data-key"); const multi=e.shiftKey;
+      const i=sortState.findIndex(s=>s.key===key);
+      if(i>=0){ sortState[i].dir=sortState[i].dir==="asc"?"desc":"asc"; }
+      else{ if(!multi) sortState.length=0; sortState.push({key,dir:"asc"}); }
+      renderTable();
+    });
+  });
+  $("#table-search")?.addEventListener("input",debounce(renderTable,120));
+  $("#modality-filter")?.addEventListener("change",renderTable);
+
+  $("#export-current")?.addEventListener("click",()=>exportCSV(currentView(),"ai-models-view.csv"));
+  $("#export-all")?.addEventListener("click",()=>exportCSV(TABLE_DATA,"ai-models-all.csv"));
+
+  renderTable();
+}
+
+function exportCSV(rows, filename){
+  if(!rows || !rows.length) { alert("No rows to export."); return; }
+  const headers=["lens","category","term","modality","examples","explain"];
+  const esc = s => `"${String(s??"").replace(/"/g,'""')}"`;
+  const lines = [headers.join(",")].concat(
+    rows.map(r=>headers.map(h=>esc(r[h])).join(","))
+  );
+  const blob = new Blob([lines.join("\n")], {type:"text/csv;charset=utf-8;"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = filename; a.style.display="none";
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+/* ---------------- Quiz (instant & running tally) ---------------- */
+const MODS = ["Text","Image","Video","Audio","Vision","Multimodal","Tabular"];
+const USE_CASES = [
+  { task:"Summarize a 15-page policy into key bullets", modality:"Text" },
+  { task:"Transcribe a lecture recording into notes", modality:"Audio" },
+  { task:"Turn a product description into a photoreal image", modality:"Image" },
+  { task:"Generate a short explainer clip from a script", modality:"Video" },
+  { task:"Detect objects and segment regions in photos", modality:"Vision" },
+  { task:"Chat with PDFs and spreadsheets at once", modality:"Multimodal" },
+  { task:"Predict customer churn from numeric features", modality:"Tabular" },
+  { task:"Rewrite a student email more professionally", modality:"Text" },
+  { task:"Create background music for a podcast intro", modality:"Audio" },
+  { task:"Upscale and denoise a low-res picture", modality:"Image" },
+  { task:"Storyboard → moving video sequence", modality:"Video" },
+  { task:"OCR + layout analysis on scanned pages", modality:"Vision" },
+  { task:"Answer questions over a slide deck and a CSV", modality:"Multimodal" },
+  { task:"Estimate house price from structured fields", modality:"Tabular" }
+];
+
+function allTerms(){ return ALL_ROWS.map(r=>({term:r.term, mod:r.mod})); }
+const TERMS = allTerms();
+
+let QUIZ=[], tally={correct:0, attempted:0};
+function makeQuiz(){
+  const qs=[];
+  pick(2, USE_CASES).forEach(u=>{
+    const wrong = pick(3, MODS.filter(m=>m!==u.modality));
+    const choices = shuffle([...wrong, u.modality]);
+    qs.push({type:"usecase_mod", prompt:`Which modality best fits: “${u.task}”?`, answer:u.modality, choices});
+  });
+  pick(2, TERMS).forEach(t=>{
+    const wrong = pick(3, MODS.filter(m=>m!==t.mod));
+    const choices = shuffle([...wrong, t.mod]);
+    qs.push({type:"term_mod", prompt:`“${t.term}” is most associated with which modality?`, answer:t.mod, choices});
+  });
+  const focusMod = MODS[Math.floor(Math.random()*MODS.length)];
+  const correctUC = pick(1, USE_CASES.filter(u=>u.modality===focusMod))[0]
+    || {task:`A task suited to ${focusMod}`, modality:focusMod};
+  const distractors = pick(3, USE_CASES.filter(u=>u.modality!==focusMod));
+  const choicesUC = shuffle([correctUC, ...distractors]).map(u=>u.task);
+  qs.push({type:"mod_to_usecase", prompt:`Which task best fits the modality “${focusMod}”?`, answer:correctUC.task, choices:choicesUC});
+  return qs.slice(0,5);
+}
+
+function resetTally(){ tally.correct=0; tally.attempted=0; updateTally(); }
+function updateTally(){ const t=$("#quiz-tally"); if(t) t.textContent = `Correct: ${tally.correct} · Attempted: ${tally.attempted}`; }
+
+function renderQuiz(){
+  const box=$("#quiz-box"); if(!box) return;
+  box.innerHTML="";
+  resetTally();
+  QUIZ.forEach((q,qi)=>{
+    const qdiv=el("div",{class:"q","data-answer":q.answer});
+    qdiv.append(el("h4",{}, `${qi+1}. ${q.prompt}`));
+    const choices=el("div",{class:"choices"});
+    q.choices.forEach((c,ci)=>{
+      const id=`q${qi}_${ci}`;
+      const label=el("label",{class:"choice", for:id});
+      const input=el("input",{type:"radio",name:`q${qi}`,value:c,id});
+      label.append(input, document.createTextNode(c));
+      input.addEventListener("change",()=>instantGrade(qdiv, input));
+      choices.append(label);
+    });
+    qdiv.append(choices); box.append(qdiv);
+  });
+}
+
+function instantGrade(qDiv, picked){
+  const answer=qDiv.getAttribute("data-answer");
+  const labels=[...qDiv.querySelectorAll(".choice")];
+  labels.forEach(l=>l.classList.remove("correct","incorrect"));
+  const correctInput=labels.map(l=>l.querySelector("input")).find(i=>i.value===answer);
+  if(correctInput) correctInput.closest(".choice").classList.add("correct");
+  if(picked.value!==answer) picked.closest(".choice").classList.add("incorrect");
+
+  const alreadyAttempted = qDiv.hasAttribute("data-attempted");
+  const wasCorrect = qDiv.getAttribute("data-correct")==="true";
+  const nowCorrect = picked.value===answer;
+
+  if(!alreadyAttempted){ tally.attempted += 1; qDiv.setAttribute("data-attempted","true"); }
+  if(wasCorrect && !nowCorrect){ tally.correct -= 1; }
+  if(!wasCorrect && nowCorrect){ tally.correct += 1; }
+  qDiv.setAttribute("data-correct", nowCorrect ? "true" : "false");
+  updateTally();
+}
+
+/* ---------------- Boot ---------------- */
+function init(){
+  try {
+    // Tabs
+    $("#tabs")?.addEventListener("click",(e)=>{
+      const btn=e.target.closest(".tab"); if(!btn) return;
+      goTab(btn.dataset.tab);
+    });
+
+    // Render sections
+    renderOverview();
+    initTable();
+    QUIZ = makeQuiz(); renderQuiz();
+
+    // Deep link
+    const hash=(location.hash||"#overview").replace("#","");
+    if(["overview","table","quiz"].includes(hash)) goTab(hash);
+  } catch (e){
+    console.error("Init error:", e);
+    const dbg = $("#debug-banner");
+    if (dbg){ dbg.style.display="block"; dbg.textContent = "Something interfered with JavaScript. The page loaded in fallback mode."; }
+    $("#panel-overview")?.classList.add("active","default-visible");
+  }
+}
+document.addEventListener("DOMContentLoaded", init);
+</script>
+</body>
+</html>
