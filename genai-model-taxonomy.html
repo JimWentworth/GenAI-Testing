@@ -101,18 +101,27 @@
       background: rgba(255, 255, 255, 0.2);
       color: #f7f9ff;
       border-radius: 999px;
-      padding: 0.4rem 0.85rem;
+      padding: 0.4rem 0.9rem;
       font-size: 0.9rem;
       display: inline-flex;
       align-items: center;
-      gap: 0.35rem;
       border: 1px solid rgba(255, 255, 255, 0.3);
+      text-decoration: none;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
     }
 
-    .tag-pill svg {
-      width: 1rem;
-      height: 1rem;
-      stroke-width: 1.5;
+    .tag-pill:hover,
+    .tag-pill:focus {
+      background: rgba(255, 255, 255, 0.28);
+      border-color: rgba(255, 255, 255, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .tag-pill:focus-visible {
+      outline: 2px solid rgba(255, 255, 255, 0.85);
+      outline-offset: 3px;
     }
 
     .panel {
@@ -127,6 +136,28 @@
 
     .panel h2 {
       margin-top: 0;
+    }
+
+    .intro-panel {
+      display: grid;
+      gap: 1.2rem;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(239, 244, 252, 0.92));
+    }
+
+    .intro-panel p {
+      color: var(--text);
+    }
+
+    .intro-list {
+      margin: 0;
+      padding-left: 1.1rem;
+      display: grid;
+      gap: 0.6rem;
+      color: var(--muted);
+    }
+
+    .intro-list strong {
+      color: var(--navy);
     }
 
     .panel-grid {
@@ -187,6 +218,10 @@
       padding-left: 1.1rem;
       color: var(--muted);
       font-size: 0.95rem;
+    }
+
+    section[id] {
+      scroll-margin-top: 6rem;
     }
 
     .filters {
@@ -576,6 +611,15 @@
 </head>
 <body>
   <header>
+    <h1>GenAI Model Taxonomy Playground · UIUC Edition</h1>
+    <p>Explore the ecosystems, training recipes, architectures, and lineages that shape today's generative AI landscape. Mix and match filters, follow family trees, and translate technical terminology into practical classroom language.</p>
+    <p>This teaching companion was crafted for University of Illinois cohorts to ground GenAI vocabulary in authentic classroom moves, helping facilitators move from buzzwords to confident instruction.</p>
+    <div class="pill-tray">
+      <a class="tag-pill" href="#timeline-tools">Timeline Explorer</a>
+      <a class="tag-pill" href="#model-gallery">Taxonomy Filters</a>
+      <a class="tag-pill" href="#scenario-composer">Classroom Scenarios</a>
+      <a class="tag-pill" href="#lineage-tools">Lineage Visualizer</a>
+      <a class="tag-pill" href="#learning-activities">Learning Activities</a>
     <h1>GenAI Model Taxonomy Playground</h1>
     <p>Explore the ecosystems, training recipes, architectures, and lineages that shape today's generative AI landscape. Mix and match filters, follow family trees, and translate technical terminology into practical classroom language.</p>
     <div class="pill-tray">
@@ -607,6 +651,17 @@
   </header>
 
   <main>
+    <section class="panel intro-panel" id="overview">
+      <h2>What this playground is designed to do</h2>
+      <p>Use this space as a guided lab where students translate abstract GenAI jargon into concrete decision making. Each module is tuned to show how model families, training strategies, and deployment patterns connect to instructional goals.</p>
+      <ul class="intro-list">
+        <li><strong>Connect taxonomy layers:</strong> Compare frameworks, architectures, and release years side-by-side to build intuition for why models behave differently.</li>
+        <li><strong>Trace lineage:</strong> Follow model ancestry to surface how innovations ripple through families and what that means for classroom adoption.</li>
+        <li><strong>Practice with scenarios:</strong> Challenge learners to match hints, compose lesson plans, and experiment with filters that mirror real teaching questions.</li>
+      </ul>
+    </section>
+
+    <section class="panel" id="model-gallery">
     <section class="panel">
       <h2>Interactive Model Gallery</h2>
       <p>Activate filters from any taxonomy dimension to watch the gallery reorganize in real time. This helps students see how the same model can be categorized through training strategy, architecture, or organizational lineage.</p>
@@ -615,6 +670,10 @@
     </section>
 
     <section class="panel-grid">
+      <section class="panel" id="timeline-tools">
+        <h2>Control Deck</h2>
+        <div class="controls">
+          <div class="control-card" id="lineage-tools">
       <section class="panel">
         <h2>Control Deck</h2>
         <div class="controls">
@@ -633,6 +692,7 @@
         </div>
       </section>
 
+      <section class="panel" id="scenario-composer">
       <section class="panel">
         <h2>Scenario Composer</h2>
         <p>Pick a classroom scenario to surface the most relevant model traits and conversation starters. Each option offers quick prompts for educators to ground jargon in practical use cases.</p>
@@ -641,6 +701,7 @@
       </section>
     </section>
 
+    <section class="panel" id="learning-activities">
     <section class="panel">
       <div class="tab-header">
         <div>
