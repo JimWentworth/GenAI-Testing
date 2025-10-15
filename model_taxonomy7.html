@@ -23,6 +23,8 @@
   .tab.active{border-color:var(--uiuc-navy);color:var(--uiuc-navy);box-shadow:0 -1px 0 #fff inset}
   .panel{display:none}
   .panel.active{display:block}
+  /* Default visible if JS doesn't run */
+  .panel.default-visible{display:block}
 
   .card{background:var(--card);border:1px solid var(--ring);border-radius:16px;box-shadow:0 1px 2px rgb(0 0 0 / 6%)}
   .card h2{margin:0;padding:16px 16px 0 16px;font-size:18px}
@@ -84,14 +86,14 @@
     <button class="tab" data-tab="quiz">Quiz</button>
   </nav>
 
-  <!-- OVERVIEW -->
-  <section class="panel active" id="panel-overview">
+  <!-- OVERVIEW (default visible without JS) -->
+  <section class="panel active default-visible" id="panel-overview">
     <div class="card">
       <h2 style="padding-bottom:8px;">Lens Overview</h2>
       <p class="sub">Click a lens to jump to the table with that lens pre-filtered. Click a pill to search that term.</p>
       <div class="grid" id="overview-grid"></div>
       <div class="footer" style="padding:12px 16px;">
-        Want details? Jump to the <a href="#table" onclick="goTab('table')">Unified Table</a> or try the <a href="#quiz" onclick="goTab('quiz')">Quiz</a>.
+        Want details? Jump to the <a href="#table" onclick="window.goTab && goTab('table')">Unified Table</a> or try the <a href="#quiz" onclick="window.goTab && goTab('quiz')">Quiz</a>.
       </div>
     </div>
   </section>
@@ -135,7 +137,7 @@
   <section class="panel" id="panel-quiz">
     <div class="card">
       <h2 style="padding-bottom:0;">Quiz — Modalities & Uses</h2>
-      <p class="sub">Instant feedback. Running tally updates as you answer. “New quiz” shuffles fresh items.</p>
+      <p class="sub">Instant feedback. Running tally updates as you answer. “New quiz” shuffles.</p>
       <div class="quiz">
         <div id="quiz-box"></div>
         <div style="display:flex;gap:8px;margin-top:12px;align-items:center;">
@@ -304,8 +306,7 @@ const DATA = {
         ]}
       ]
     }
-  },
-  relationships:[["Training","Architecture"],["Training","Family"],["Family","Lineage"],["Architecture","Lineage"]]
+  }
 };
 
 /* ---------------- Helpers ---------------- */
@@ -327,24 +328,15 @@ function pick(n,arr){ const a=[...arr]; const out=[]; while(out.length<n && a.le
 
 /* ---------------- Tabs ---------------- */
 function goTab(name){
-  $$(".tab").forEach(b=>b.classList.toggle("active", b.dataset.tab===name));
-  $$(".panel").forEach(p=>p.classList.toggle("active", p.id===`panel-${name}`));
-  // focus search when landing on table
-  if(name==="table"){ setTimeout(()=>$("#table-search")?.focus(), 50); }
-  // update hash for deep links
+  const tabs=$$("#tabs .tab"); const panels=$$(".panel");
+  tabs.forEach(b=>b.classList.toggle("active", b.dataset.tab===name));
+  panels.forEach(p=>p.classList.toggle("active", p.id===`panel-${name}`));
+  if(name==="table"){ const t=$("#table-search"); t && t.focus(); }
   history.replaceState(null,"",`#${name}`);
 }
-$("#tabs").addEventListener("click",(e)=>{
-  const btn=e.target.closest(".tab"); if(!btn) return;
-  goTab(btn.dataset.tab);
-});
-window.addEventListener("load",()=>{
-  const hash=(location.hash||"#overview").replace("#","");
-  if(["overview","table","quiz"].includes(hash)) goTab(hash);
-});
 
 /* ---------------- Overview ---------------- */
-function lensRows(){ // flat rows for counts & pills
+function lensRows(){
   const rows=[];
   Object.entries(DATA.lenses).forEach(([lens,meta])=>{
     meta.groups.forEach(g=>{
@@ -358,203 +350,28 @@ function lensRows(){ // flat rows for counts & pills
 const ALL_ROWS = lensRows();
 
 function renderOverview(){
-  const grid=$("#overview-grid"); grid.innerHTML="";
+  const grid=$("#overview-grid"); if(!grid) return;
+  grid.innerHTML="";
   const lensOrder=["Training","Architecture","Family","Lineage"];
   lensOrder.forEach(name=>{
     const meta=DATA.lenses[name];
     const colorClass = name==="Training"?"blue":name==="Architecture"?"green":name==="Family"?"amber":"red";
     const rows = ALL_ROWS.filter(r=>r.lens===name);
-    const topTerms = rows.slice(0,6); // first few for pills; easy to expand
+    const topTerms = rows.slice(0,6);
 
     const card=el("div",{class:"lenscard card", style:`border-left-color:${meta.color}`});
     const head=el("div",{class:"row"},
       el("span",{class:`dot ${colorClass}`}),
       el("span",{class:"title"}, name),
-      el("span",{class:"small", style:"color:var(--muted);margin-left:auto;"}, `${rows.length} terms`)
+      el("span",{style:"color:var(--muted);margin-left:auto;font-size:12px;"}, `${rows.length} terms`)
     );
     const desc=el("div",{class:"desc"}, meta.desc);
-    const actions=el("div",{},
-      el("button",{class:"pill", title:`View ${name} in table`}, "Open in Table →")
-    );
+    const actions=el("div",{}, el("button",{class:"pill", title:`View ${name} in table`}, "Open in Table →"));
     actions.querySelector("button").addEventListener("click",()=>{
       goTab("table");
-      // turn only this lens on
       $$("#lens-filters input[type=checkbox]").forEach(c=>{ c.checked = (c.value===name); });
       renderTable();
     });
 
     const pills=el("div",{class:"pills"});
-    topTerms.forEach(r=>{
-      const p=el("button",{class:"pill",title:`${r.explain} • Modality: ${r.mod}`}, r.term);
-      p.addEventListener("click",()=>{
-        goTab("table");
-        $("#table-search").value=r.term;
-        renderTable();
-      });
-      pills.append(p);
-    });
-
-    card.append(head,desc,actions,pills);
-    grid.append(card);
-  });
-}
-
-/* ---------------- Table ---------------- */
-let ACTIVE_LENS = "Training"; // only used for some callbacks; filters handle real view
-const sortState=[];
-function renderLensFilters(){
-  const box=$("#lens-filters"); box.innerHTML="";
-  Object.keys(DATA.lenses).forEach(name=>{
-    const c=el("input",{type:"checkbox",value:name,checked:true});
-    const lab=el("label",{},c," "+name);
-    c.addEventListener("change",renderTable);
-    box.append(lab);
-  });
-}
-function tableRows(){
-  return ALL_ROWS.map(r=>({lens:r.lens,category:r.category,term:r.term,explain:r.explain,examples:r.examples,modality:r.mod}));
-}
-let TABLE_DATA = tableRows();
-
-function currentView(){
-  const q=$("#table-search").value.trim().toLowerCase();
-  const lensEnabled=$$("#lens-filters input[type=checkbox]:checked").map(c=>c.value);
-  const modSel=$("#modality-filter").value;
-  let view=TABLE_DATA.filter(r=>lensEnabled.includes(r.lens));
-  if(modSel) view=view.filter(r=>r.modality===modSel);
-  if(q) view=view.filter(r=>Object.values(r).join(" ").toLowerCase().includes(q));
-  // sort
-  let sorted=[...view];
-  if(sortState.length){
-    sorted.sort((a,b)=>{
-      for(const {key,dir} of sortState){
-        const av=(a[key]??"").toString().toLowerCase();
-        const bv=(b[key]??"").toString().toLowerCase();
-        if(av<bv) return dir==="asc"?-1:1;
-        if(av>bv) return dir==="asc"?1:-1;
-      } return 0;
-    });
-  }
-  return sorted;
-}
-
-function renderTable(){
-  const tb=$("#data-table tbody"); tb.innerHTML="";
-  currentView().forEach(r=>{
-    const tr=el("tr",{},
-      el("td",{},r.lens),
-      el("td",{},r.category),
-      el("td",{},el("span",{class:"tag"},r.term)),
-      el("td",{},el("span",{class:"mod"},r.modality)),
-      el("td",{},r.examples||"—"),
-      el("td",{},r.explain)
-    ); tb.append(tr);
-  });
-}
-
-function initTable(){
-  renderLensFilters();
-  $$("#data-table thead th").forEach(th=>{
-    th.addEventListener("click",e=>{
-      const key=th.getAttribute("data-key"); const multi=e.shiftKey;
-      const i=sortState.findIndex(s=>s.key===key);
-      if(i>=0){ sortState[i].dir=sortState[i].dir==="asc"?"desc":"asc"; }
-      else{ if(!multi) sortState.length=0; sortState.push({key,dir:"asc"}); }
-      renderTable();
-    });
-  });
-  $("#table-search").addEventListener("input",debounce(renderTable,120));
-  $("#modality-filter").addEventListener("change",renderTable);
-  renderTable();
-
-  // CSV export
-  $("#export-current").addEventListener("click",()=>exportCSV(currentView(),"ai-models-view.csv"));
-  $("#export-all").addEventListener("click",()=>exportCSV(TABLE_DATA,"ai-models-all.csv"));
-}
-
-function exportCSV(rows, filename){
-  if(!rows || !rows.length) { alert("No rows to export."); return; }
-  const headers=["lens","category","term","modality","examples","explain"];
-  const esc = s => `"${String(s??"").replace(/"/g,'""')}"`;
-  const lines = [headers.join(",")].concat(
-    rows.map(r=>headers.map(h=>esc(r[h])).join(","))
-  );
-  const blob = new Blob([lines.join("\n")], {type:"text/csv;charset=utf-8;"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url; a.download = filename; a.style.display="none";
-  document.body.appendChild(a); a.click();
-  document.body.removeChild(a); URL.revokeObjectURL(url);
-}
-
-/* ---------------- Quiz (instant & running tally) ---------------- */
-const MODS = ["Text","Image","Video","Audio","Vision","Multimodal","Tabular"];
-const USE_CASES = [
-  { task:"Summarize a 15-page policy into key bullets", modality:"Text" },
-  { task:"Transcribe a lecture recording into notes", modality:"Audio" },
-  { task:"Turn a product description into a photoreal image", modality:"Image" },
-  { task:"Generate a short explainer clip from a script", modality:"Video" },
-  { task:"Detect objects and segment regions in photos", modality:"Vision" },
-  { task:"Chat with PDFs and spreadsheets at once", modality:"Multimodal" },
-  { task:"Predict customer churn from numeric features", modality:"Tabular" },
-  { task:"Rewrite a student email more professionally", modality:"Text" },
-  { task:"Create background music for a podcast intro", modality:"Audio" },
-  { task:"Upscale and denoise a low-res picture", modality:"Image" },
-  { task:"Storyboard → moving video sequence", modality:"Video" },
-  { task:"OCR + layout analysis on scanned pages", modality:"Vision" },
-  { task:"Answer questions over a slide deck and a CSV", modality:"Multimodal" },
-  { task:"Estimate house price from structured fields", modality:"Tabular" }
-];
-
-function allTerms(){ return ALL_ROWS.map(r=>({term:r.term, mod:r.mod})); }
-const TERMS = allTerms();
-
-let QUIZ=[], tally={correct:0, attempted:0};
-function makeQuiz(){
-  const qs=[];
-  // 2 use-case → modality
-  pick(2, USE_CASES).forEach(u=>{
-    const wrong = pick(3, MODS.filter(m=>m!==u.modality));
-    const choices = shuffle([...wrong, u.modality]);
-    qs.push({type:"usecase_mod", prompt:`Which modality best fits: “${u.task}”?`, answer:u.modality, choices});
-  });
-  // 2 term → modality
-  pick(2, TERMS).forEach(t=>{
-    const wrong = pick(3, MODS.filter(m=>m!==t.mod));
-    const choices = shuffle([...wrong, t.mod]);
-    qs.push({type:"term_mod", prompt:`“${t.term}” is most associated with which modality?`, answer:t.mod, choices});
-  });
-  // 1 modality → use-case
-  const focusMod = MODS[Math.floor(Math.random()*MODS.length)];
-  const correctUC = pick(1, USE_CASES.filter(u=>u.modality===focusMod))[0]
-    || {task:`A task suited to ${focusMod}`, modality:focusMod};
-  const distractors = pick(3, USE_CASES.filter(u=>u.modality!==focusMod));
-  const choicesUC = shuffle([correctUC, ...distractors]).map(u=>u.task);
-  qs.push({type:"mod_to_usecase", prompt:`Which task best fits the modality “${focusMod}”?`, answer:correctUC.task, choices:choicesUC});
-  return qs.slice(0,5);
-}
-
-function resetTally(){ tally.correct=0; tally.attempted=0; updateTally(); }
-function updateTally(){ $("#quiz-tally").textContent = `Correct: ${tally.correct} · Attempted: ${tally.attempted}`; }
-
-function renderQuiz(){
-  const box=$("#quiz-box"); box.innerHTML="";
-  resetTally();
-  QUIZ.forEach((q,qi)=>{
-    const qdiv=el("div",{class:"q","data-answer":q.answer});
-    qdiv.append(el("h4",{}, `${qi+1}. ${q.prompt}`));
-    const choices=el("div",{class:"choices"});
-    q.choices.forEach((c,ci)=>{
-      const id=`q${qi}_${ci}`;
-      const label=el("label",{class:"choice", for:id});
-      const input=el("input",{type:"radio",name:`q${qi}`,value:c,id});
-      label.append(input, document.createTextNode(c));
-      input.addEventListener("change",()=>instantGrade(qdiv, input));
-      choices.append(label);
-    });
-    qdiv.append(choices); box.append(qdiv);
-  });
-}
-
-function instantGrade(qDiv, picked){
-  const answ
+    topTerms.forEa
