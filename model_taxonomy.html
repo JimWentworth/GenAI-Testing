@@ -153,89 +153,166 @@ const DATA = {
       desc:"How does the model learn? Strategy used to fit parameters.",
       groups:[
         { name:"Supervised", color:"blue", terms:[
-          ["Logistic Regression","Learns from labeled examples to predict categories (spam vs not).","Email spam filters"],
-          ["Random Forest","Many decision trees voting together to reduce overfitting.","Tabular risk scoring"],
-          ["BERT fine-tune","Start from a pre-trained language backbone and teach it a task with labels.","Sentiment classifier"]
+          ["Logistic Regression","Learns from labeled examples to predict categories.","Email spam filters"],
+          ["Random Forest","Ensemble of decision trees voting to reduce overfitting.","Risk scoring on tabular data"],
+          ["Fine-tuning (pretrained backbone)","Start from a pretrained model and teach a labeled task.","BERT/GPT fine-tunes for classification"]
         ]},
         { name:"Unsupervised", color:"amber", terms:[
-          ["K-Means","Groups similar items without labels by clustering.","Customer segments"],
-          ["PCA","Compresses data to fewer directions while keeping the gist.","Dimensionality reduction"],
-          ["Autoencoder","Learns to compress and reconstruct data, surfacing structure.","Anomaly detection"]
+          ["K-Means","Clusters similar items without labels.","Customer segments"],
+          ["PCA","Projects data into fewer directions preserving variance.","Compression/visualization"],
+          ["Autoencoder","Learns to compress and reconstruct to reveal structure.","Anomaly detection"]
         ]},
         { name:"Reinforcement", color:"green", terms:[
-          ["DQN","Learns actions by trial and error with rewards.","Atari games"],
-          ["AlphaZero","Self-play reinforcement learning with tree search.","Go/Chess engines"],
-          ["RLHF phase","Uses human preferences as a reward to shape outputs.","Helpful chat responses"]
+          ["DQN","Learns actions via rewards.","Atari agents"],
+          ["AlphaZero-style","Self-play + tree search.","Chess/Go engines"],
+          ["RLHF phase","Human preference signals shape outputs after pretraining.","Chat alignment"]
         ]},
         { name:"Self-supervised", color:"blue", terms:[
-          ["Masked LM","Predict missing words to learn language structure.","BERT pre-training"],
-          ["Next-token prediction","Predict the next token to model sequences.","GPT pre-training"],
-          ["SimCLR","Learns visual features by matching augmented views.","Vision backbones"]
+          ["Masked LM","Predict masked tokens to learn language structure.","BERT pretraining"],
+          ["Next-token prediction","Autoregressively predict the next token.","GPT/Gemma/Mistral pretraining"],
+          ["Contrastive learning","Pull same content together, push different apart.","CLIP, SimCLR for vision"]
         ]}
       ]
     },
+
     Architecture: {
       color:"#16a34a",
       desc:"What is the structural form of the model?",
       groups:[
         { name:"Classical", color:"amber", terms:[
-          ["Decision Tree","If-then rules split data like a flowchart.","Simple, explainable predictions"],
-          ["Linear / Logistic Regression","Weighted sums; fast, strong baselines.","Tabular tasks"]
+          ["Decision Tree","If-then splits like a flowchart.","Explainable baselines"],
+          ["Linear / Logistic Regression","Weighted sums; fast/strong baselines.","Tabular tasks"]
         ]},
         { name:"Neural Nets", color:"green", terms:[
-          ["CNN","Slides filters over images to detect patterns.","Vision tasks"],
-          ["RNN / LSTM","Processes sequences step-by-step with memory.","Time-series, early NLP"],
-          ["Transformer","Uses attention to relate all tokens at once.","Modern LMs & vision"]
+          ["CNN","Sliding filters capture spatial patterns.","Vision"],
+          ["RNN / LSTM","Token-by-token with memory state.","Time-series, early NLP"],
+          ["Transformer (Encoder/Decoder)","Attention relates all tokens at once.","Modern LMs & vision"],
+          ["State-Space Models (SSM) / Mamba","Sequence models with linear-time scaling.","Long-sequence efficiency"]
         ]},
         { name:"Generative", color:"blue", terms:[
-          ["Autoencoder / VAE","Compress then reconstruct to learn latent space.","Denoising, generation"],
-          ["Diffusion","Gradually denoise noise into images/audio/video.","Image/video synthesis"]
+          ["Autoregressive Decoders","Generate one token/pixel at a time.","GPT-style LMs, PixelCNN"],
+          ["Autoencoder / VAE","Compress→reconstruct to learn latent space.","Denoising, representation learning"],
+          ["Diffusion (DDPM/Score-based)","Denoise noise step-by-step to sample data.","Stable Diffusion, Imagen, Sora (under the hood)"],
+          ["Latent Diffusion","Run diffusion in a learned latent space for speed.","Stable Diffusion SDXL/SD3"],
+          ["Flow-based Models","Invertible transforms with exact likelihoods.","RealNVP, Glow"]
         ]}
       ]
     },
+
     Family: {
       color:"#f59e0b",
       desc:"Which named family or ecosystem does a model belong to?",
       groups:[
         { name:"OpenAI", color:"amber", terms:[
-          ["GPT family","Autoregressive LMs (e.g., GPT-3.5, GPT-4, o-series).","Chat, code, tools"]
-        ]},
-        { name:"Open-source", color:"green", terms:[
-          ["LLaMA family","Meta’s open(-ish) LLM line with many fine-tunes.","Research, local use"],
-          ["Mistral family","Efficient LLMs (7B-mix etc.), strong small models.","Edge, cost-sensitive"]
-        ]},
-        { name:"Google", color:"blue", terms:[
-          ["Gemini family","Multimodal successors to PaLM.","Text+image+audio tasks"]
+          ["GPT family","Autoregressive LLMs (e.g., GPT-3.5, GPT-4, o-series).","Chat, tools, code"],
+          ["DALL·E family","Text-to-image diffusion/AR hybrids.","DALL·E 2, DALL·E 3"],
+          ["Sora (video)","Text-to-video generative model (diffusion-like).","Video synthesis"]
         ]},
         { name:"Anthropic", color:"blue", terms:[
-          ["Claude family","Constitutional-style alignment focus.","Long-context writing"]
+          ["Claude family","Safety-aligned LLMs with long context.","Opus, Sonnet, Haiku"]
+        ]},
+        { name:"Google / DeepMind", color:"blue", terms:[
+          ["Gemini family","Multimodal LLMs succeeding PaLM.","Text-image-audio-tools"],
+          ["Imagen family","High-fidelity image diffusion.","Imagen / Imagen 2"],
+          ["Veo (video)","Text-to-video generation.","Video synthesis"]
+        ]},
+        { name:"Meta", color:"green", terms:[
+          ["LLaMA family","Open(-ish) LLM line with many community variants.","LLaMA-2/3"],
+          ["SAM family","Promptable segmentation models.","Segment Anything"]
+        ]},
+        { name:"Mistral AI (open-source)", color:"green", terms:[
+          ["Mistral family","Efficient small/medium LLMs.","Mistral 7B"],
+          ["Mixtral family","Mixture-of-Experts (MoE) LLMs.","Mixtral 8×7B, 8×22B"]
+        ]},
+        { name:"Alibaba", color:"green", terms:[
+          ["Qwen family","Open LLMs across sizes and modalities.","Qwen 2/2.5, Qwen-VL"]
+        ]},
+        { name:"Databricks", color:"green", terms:[
+          ["DBRX family","Mixture-of-Experts LLM.","DBRX Instruct"]
+        ]},
+        { name:"Microsoft", color:"green", terms:[
+          ["Phi family","Small, data-curated LLMs for efficiency.","Phi-2, Phi-3, Phi-4 mini"]
+        ]},
+        { name:"xAI", color:"green", terms:[
+          ["Grok family","LLMs with tool use emphasis.","Grok-1.x"]
+        ]},
+        { name:"01.AI", color:"green", terms:[
+          ["Yi family","High-quality open LLMs.","Yi-34B, Yi-1.5"]
+        ]},
+        { name:"Cohere", color:"green", terms:[
+          ["Command family","Enterprise-oriented LLMs.","Command-R / R+ (RAG-friendly)"]
+        ]},
+        { name:"Open-source Vision/Multimodal", color:"green", terms:[
+          ["Stable Diffusion family","Latent diffusion for images.","SD 1.5, SD 2.1, SDXL, SD3"],
+          ["CLIP / OpenCLIP","Text-image embedding models.","Retrieval, alignment"],
+          ["DINOv2","Self-supervised vision backbone.","Feature extraction"]
+        ]},
+        { name:"Independent Audio/Video (closed)", color:"amber", terms:[
+          ["Midjourney","Text-to-image (diffusion/AR stack, proprietary).","MJ v1–v6"],
+          ["Runway Gen family","Text-to-video & image tools.","Gen-1, Gen-2, Gen-3"],
+          ["Pika","Text-to-video/image.","Pika 1.0/1.5"],
+          ["Suno / Udio","Text-to-music audio models.","Song generation"]
         ]}
       ]
     },
+
     Lineage: {
       color:"#dc2626",
       desc:"How versions evolve: releases, forks, and inherited innovations.",
       groups:[
-        { name:"OpenAI lineage", color:"red", terms:[
-          ["GPT-2 → GPT-3 → 3.5 → 4 → o-series","Scaling + alignment + tool use.","Accuracy & safety rises"]
+        { name:"OpenAI (LLM & media)", color:"red", terms:[
+          ["GPT-2 → GPT-3 → 3.5 → 4 → o-series","Scaling + instruction tuning + tool use.","Reasoning & safety improve"],
+          ["DALL·E 1 → 2 → 3","From discrete VQ models to higher-fidelity diffusion.","Image quality & text rendering"],
+          ["Sora (initial)","First public video model iteration.","Longer, coherent video clips"]
         ]},
-        { name:"Meta lineage", color:"green", terms:[
-          ["LLaMA 1 → 2 → 3","Open weights, community fine-tunes.","Rapid ecosystem growth"]
+        { name:"Meta", color:"green", terms:[
+          ["LLaMA 1 → 2 → 3","Open weights and community fine-tunes.","Ecosystem acceleration"]
         ]},
-        { name:"Google lineage", color:"blue", terms:[
-          ["PaLM → PaLM-2 → Gemini","Shift to multimodal + efficiency.","Broader modalities"]
+        { name:"Google / DeepMind", color:"blue", terms:[
+          ["PaLM → PaLM-2 → Gemini","Shift to multimodality + efficiency.","Tool use & long context"],
+          ["Imagen → Imagen 2 → Veo","Image fidelity → video generation.","Photorealism & motion"]
+        ]},
+        { name:"Mistral", color:"green", terms:[
+          ["Mistral 7B → Mixtral 8×7B → 8×22B","From dense to MoE scaling.","Latency/quality trade-offs"]
+        ]},
+        { name:"Alibaba", color:"green", terms:[
+          ["Qwen 1 → 2 → 2.5","Coverage, multilinguality, and tools.","VL/Audio variants"]
+        ]},
+        { name:"Databricks", color:"green", terms:[
+          ["DBRX base → DBRX instruct","Open MoE with strong RAG pairing.","Enterprise workflows"]
+        ]},
+        { name:"Microsoft", color:"green", terms:[
+          ["Phi-1 → 2 → 3 → 4-mini","Data-centric small LLMs.","Edge & low-cost use"]
+        ]},
+        { name:"01.AI", color:"green", terms:[
+          ["Yi 34B → Yi-1.5","Open large models tuned for quality.","Community adoption"]
+        ]},
+        { name:"Stable Diffusion (Stability/CompVis)", color:"blue", terms:[
+          ["SD 1.x → SD 2.x → SDXL → SD3","Latent diffusion, larger backbones, better text rendering.","Text-to-image"]
+        ]},
+        { name:"Midjourney (closed)", color:"amber", terms:[
+          ["v1 → v2 → v3 → v4 → v5 → v6","Proprietary stack, strong style control.","Artistic TTI"]
+        ]},
+        { name:"Video Gen (mixed)", color:"amber", terms:[
+          ["Runway Gen-1 → Gen-2 → Gen-3","Text-to-video quality & temporal coherence.","Short clips"],
+          ["Pika 1.0 → 1.5","Fast iteration on video.","Animated assets"]
+        ]},
+        { name:"Emerging Open LLMs", color:"green", terms:[
+          ["DeepSeek V2 → V2.5 → V3","Training efficiency & reasoning focus.","Benchmarks trend up"]
         ]}
       ]
     }
   },
+
+  // Pairs of lens names to connect in the diagram
   relationships:[
-    // pairs of lens names for edges
     ["Training","Architecture"],
     ["Training","Family"],
     ["Family","Lineage"],
-    ["Architecture","Lineage"] // show as dashed
+    ["Architecture","Lineage"]
   ]
 };
+
 
 /* ---------- State ---------- */
 let ACTIVE_LENS = "Training";
