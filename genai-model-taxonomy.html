@@ -9,15 +9,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      color-scheme: light dark;
-      --bg: #0d0d16;
-      --panel: #141427;
-      --accent: #5cf0ff;
-      --accent-soft: rgba(92, 240, 255, 0.2);
-      --text: #f2f7ff;
-      --muted: #98a4c5;
-      --glow: rgba(92, 240, 255, 0.45);
       font-size: 16px;
+      --bg: #f7f8fb;
+      --navy: #13294b;
+      --navy-soft: #1f3d7a;
+      --orange: #e84a27;
+      --panel: #ffffff;
+      --panel-border: rgba(19, 41, 75, 0.12);
+      --panel-shadow: 0 18px 40px rgba(19, 41, 75, 0.08);
+      --text: #1f2933;
+      --muted: #5f6c80;
+      --accent-soft: rgba(232, 74, 39, 0.1);
     }
 
     * {
@@ -27,8 +29,7 @@
     body {
       margin: 0;
       font-family: 'Lexend', system-ui, sans-serif;
-      background: radial-gradient(circle at top, rgba(92, 240, 255, 0.1) 0%, transparent 55%),
-        linear-gradient(160deg, #060613, #050507 60%, #000);
+      background: linear-gradient(180deg, var(--bg) 0%, #eef1f7 100%);
       color: var(--text);
       min-height: 100vh;
       display: flex;
@@ -36,21 +37,26 @@
     }
 
     header {
-      padding: 2.5rem 5vw 2rem;
+      padding: 2.75rem 5vw 2.5rem;
       display: grid;
-      gap: 1.25rem;
-      background: linear-gradient(180deg, rgba(20, 20, 39, 0.85) 0%, rgba(20, 20, 39, 0.35) 100%);
+      gap: 1.1rem;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-soft) 65%, #1d478b 100%);
+      color: #f7f9ff;
       position: relative;
       overflow: hidden;
+    }
+
+    header p {
+      color: rgba(247, 249, 255, 0.82);
     }
 
     header::after {
       content: "";
       position: absolute;
-      inset: 15% 10% auto;
-      height: 250px;
-      background: radial-gradient(circle, rgba(92, 240, 255, 0.35), transparent 60%);
-      filter: blur(40px);
+      inset: 15% 15% auto;
+      height: 200px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent 65%);
+      filter: blur(45px);
       z-index: 0;
     }
 
@@ -60,21 +66,22 @@
     }
 
     h1 {
-      font-size: clamp(2.5rem, 5vw + 1rem, 4.5rem);
+      font-size: clamp(2.4rem, 4vw + 1.2rem, 4rem);
       margin: 0;
       line-height: 1.05;
-      letter-spacing: -0.03em;
-      text-shadow: 0 0 22px rgba(92, 240, 255, 0.45);
+      letter-spacing: -0.02em;
     }
 
     h2 {
-      font-size: 1.75rem;
-      margin-bottom: 0.5rem;
+      font-size: 1.6rem;
+      margin-bottom: 0.35rem;
+      color: var(--navy);
     }
 
     p {
       margin: 0;
       color: var(--muted);
+      line-height: 1.6;
     }
 
     main {
@@ -91,16 +98,15 @@
     }
 
     .tag-pill {
-      background: rgba(92, 240, 255, 0.12);
-      color: var(--text);
+      background: rgba(255, 255, 255, 0.2);
+      color: #f7f9ff;
       border-radius: 999px;
-      padding: 0.45rem 0.9rem;
+      padding: 0.4rem 0.85rem;
       font-size: 0.9rem;
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
-      border: 1px solid rgba(92, 240, 255, 0.35);
-      box-shadow: 0 0 14px rgba(92, 240, 255, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.3);
     }
 
     .tag-pill svg {
@@ -110,21 +116,13 @@
     }
 
     .panel {
-      background: rgba(17, 17, 30, 0.85);
+      background: var(--panel);
       border-radius: 22px;
-      padding: 1.8rem;
-      border: 1px solid rgba(92, 240, 255, 0.08);
-      backdrop-filter: blur(18px);
+      padding: 1.9rem;
+      border: 1px solid var(--panel-border);
+      box-shadow: var(--panel-shadow);
       position: relative;
       overflow: hidden;
-    }
-
-    .panel::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 30% -20%, rgba(92, 240, 255, 0.18), transparent 55%);
-      pointer-events: none;
     }
 
     .panel h2 {
@@ -154,39 +152,41 @@
     }
 
     .model-card {
-      background: rgba(10, 10, 20, 0.75);
-      border: 1px solid rgba(92, 240, 255, 0.2);
-      padding: 1.2rem;
+      background: #fefefe;
+      border: 1px solid rgba(19, 41, 75, 0.12);
+      padding: 1.3rem;
       border-radius: 18px;
       display: grid;
-      gap: 0.8rem;
+      gap: 0.85rem;
       position: relative;
       min-height: 220px;
+      box-shadow: 0 16px 30px rgba(19, 41, 75, 0.08);
     }
 
     .model-card::after {
       content: attr(data-year);
       position: absolute;
-      top: 1.1rem;
-      right: 1.1rem;
+      top: 1rem;
+      right: 1rem;
       font-size: 0.85rem;
-      color: rgba(92, 240, 255, 0.65);
-      background: rgba(92, 240, 255, 0.1);
+      color: var(--navy);
+      background: rgba(19, 41, 75, 0.08);
       padding: 0.35rem 0.6rem;
       border-radius: 999px;
     }
 
     .model-card h3 {
       margin: 0;
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       letter-spacing: -0.01em;
+      color: var(--navy);
     }
 
     .model-card ul {
       margin: 0;
       padding-left: 1.1rem;
       color: var(--muted);
-      font-size: 0.9rem;
+      font-size: 0.95rem;
     }
 
     .filters {
@@ -197,19 +197,21 @@
     }
 
     .filter-chip {
-      border: 1px solid rgba(92, 240, 255, 0.3);
-      padding: 0.45rem 0.75rem;
+      border: 1px solid rgba(19, 41, 75, 0.18);
+      padding: 0.45rem 0.85rem;
       border-radius: 12px;
-      background: rgba(92, 240, 255, 0.08);
+      background: rgba(19, 41, 75, 0.04);
       cursor: pointer;
       transition: all 0.2s ease;
-      font-size: 0.9rem;
+      font-size: 0.92rem;
+      color: var(--navy);
     }
 
     .filter-chip.active {
-      background: rgba(92, 240, 255, 0.35);
-      color: #051824;
-      box-shadow: 0 0 15px rgba(92, 240, 255, 0.5);
+      background: rgba(232, 74, 39, 0.12);
+      color: var(--orange);
+      border-color: rgba(232, 74, 39, 0.35);
+      box-shadow: 0 8px 18px rgba(232, 74, 39, 0.2);
     }
 
     .controls {
@@ -224,20 +226,21 @@
     }
 
     .control-card {
-      background: rgba(10, 10, 20, 0.85);
-      border: 1px solid rgba(92, 240, 255, 0.18);
-      padding: 1.3rem;
+      background: rgba(19, 41, 75, 0.04);
+      border: 1px solid var(--panel-border);
+      padding: 1.2rem 1.35rem;
       border-radius: 16px;
       display: grid;
-      gap: 0.9rem;
+      gap: 0.85rem;
     }
 
     .control-card strong {
       font-weight: 600;
+      color: var(--navy);
     }
 
     .control-card label {
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       color: var(--muted);
     }
 
@@ -245,15 +248,16 @@
       width: 100%;
       padding: 0.65rem;
       border-radius: 12px;
-      border: 1px solid rgba(92, 240, 255, 0.35);
-      background: rgba(5, 15, 26, 0.75);
+      border: 1px solid rgba(19, 41, 75, 0.25);
+      background: #f8f9fb;
       color: var(--text);
       font-family: inherit;
     }
 
     .range-value {
       font-weight: 600;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
+      color: var(--navy);
     }
 
     .lineage-path {
@@ -267,20 +271,22 @@
     .lineage-node {
       padding: 0.4rem 0.7rem;
       border-radius: 999px;
-      background: rgba(92, 240, 255, 0.18);
-      border: 1px solid rgba(92, 240, 255, 0.3);
-      font-size: 0.85rem;
+      background: rgba(19, 41, 75, 0.08);
+      border: 1px solid rgba(19, 41, 75, 0.18);
+      font-size: 0.9rem;
+      color: var(--navy);
     }
 
     .lineage-node.current {
-      background: rgba(92, 240, 255, 0.4);
-      color: #041219;
+      background: rgba(232, 74, 39, 0.14);
+      color: var(--orange);
       font-weight: 600;
+      border-color: rgba(232, 74, 39, 0.4);
     }
 
     .arrow {
-      color: rgba(92, 240, 255, 0.4);
-      font-size: 1.1rem;
+      color: rgba(19, 41, 75, 0.4);
+      font-size: 1rem;
     }
 
     .term-grid {
@@ -295,19 +301,20 @@
     }
 
     .term-card {
-      background: rgba(9, 9, 18, 0.78);
-      border: 1px solid rgba(92, 240, 255, 0.2);
-      padding: 1rem;
+      background: #f8f9fb;
+      border: 1px solid rgba(19, 41, 75, 0.12);
+      padding: 1.1rem;
       border-radius: 16px;
       position: relative;
       overflow: hidden;
+      box-shadow: 0 12px 24px rgba(19, 41, 75, 0.08);
     }
 
     .term-card::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(92, 240, 255, 0.12), transparent 55%);
+      background: linear-gradient(135deg, rgba(232, 74, 39, 0.08), transparent 60%);
       opacity: 0;
       transition: opacity 0.3s ease;
       pointer-events: none;
@@ -320,22 +327,23 @@
     .term-card h3 {
       margin-top: 0;
       margin-bottom: 0.35rem;
+      color: var(--navy);
     }
 
     .term-card p {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: var(--muted);
     }
 
     .term-card .tip {
-      margin-top: 0.6rem;
-      font-size: 0.8rem;
-      color: rgba(92, 240, 255, 0.9);
+      margin-top: 0.75rem;
+      font-size: 0.82rem;
+      color: var(--orange);
       display: inline-block;
-      border: 1px solid rgba(92, 240, 255, 0.3);
-      padding: 0.3rem 0.55rem;
+      border: 1px solid rgba(232, 74, 39, 0.35);
+      padding: 0.35rem 0.6rem;
       border-radius: 999px;
-      background: rgba(92, 240, 255, 0.1);
+      background: rgba(232, 74, 39, 0.08);
     }
 
     .scenario-pills {
@@ -346,54 +354,223 @@
 
     .scenario-pill {
       border-radius: 999px;
-      border: 1px solid rgba(92, 240, 255, 0.3);
-      background: rgba(92, 240, 255, 0.08);
-      color: var(--text);
-      padding: 0.5rem 1rem;
+      border: 1px solid rgba(19, 41, 75, 0.18);
+      background: rgba(19, 41, 75, 0.05);
+      color: var(--navy);
+      padding: 0.5rem 1.1rem;
       cursor: pointer;
       transition: all 0.2s ease;
       font-size: 0.95rem;
     }
 
     .scenario-pill.active {
-      background: rgba(92, 240, 255, 0.45);
-      color: #041219;
-      box-shadow: 0 0 16px rgba(92, 240, 255, 0.55);
+      background: rgba(232, 74, 39, 0.14);
+      color: var(--orange);
+      box-shadow: 0 10px 20px rgba(232, 74, 39, 0.18);
+      border-color: rgba(232, 74, 39, 0.35);
       font-weight: 600;
     }
 
     .scenario-content {
       margin-top: 1.1rem;
       display: grid;
-      gap: 0.8rem;
+      gap: 0.9rem;
     }
 
     .scenario-content ul {
       margin: 0;
       padding-left: 1.1rem;
       color: var(--muted);
-      font-size: 0.9rem;
+      font-size: 0.95rem;
     }
 
     .scenario-highlight {
-      font-size: 0.95rem;
-      color: rgba(92, 240, 255, 0.9);
-      background: rgba(92, 240, 255, 0.12);
-      padding: 0.65rem 0.9rem;
+      font-size: 1rem;
+      color: var(--orange);
+      background: rgba(232, 74, 39, 0.1);
+      padding: 0.75rem 1rem;
       border-radius: 12px;
-      border: 1px solid rgba(92, 240, 255, 0.25);
+      border: 1px solid rgba(232, 74, 39, 0.28);
+    }
+
+    .tab-header {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    @media (min-width: 900px) {
+      .tab-header {
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: space-between;
+      }
+    }
+
+    .tab-intro {
+      margin: 0.4rem 0 0;
+      color: rgba(19, 41, 75, 0.75);
+    }
+
+    .tab-buttons {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-button {
+      border: 1px solid rgba(19, 41, 75, 0.18);
+      background: #ffffff;
+      color: var(--navy);
+      border-radius: 999px;
+      padding: 0.55rem 1.1rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-button.active {
+      background: var(--navy);
+      color: #ffffff;
+      border-color: var(--navy);
+      box-shadow: 0 12px 24px rgba(19, 41, 75, 0.18);
+    }
+
+    .tab-content {
+      display: none;
+      margin-top: 1.5rem;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .tab-description {
+      margin-bottom: 1.25rem;
+      color: var(--muted);
+    }
+
+    .drag-drop-container {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 1000px) {
+      .drag-drop-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .draggable-list,
+    .dropzone-list {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .drag-item {
+      padding: 0.6rem 0.9rem;
+      border-radius: 12px;
+      border: 1px solid rgba(19, 41, 75, 0.18);
+      background: #ffffff;
+      box-shadow: 0 10px 22px rgba(19, 41, 75, 0.1);
+      cursor: grab;
+      font-weight: 600;
+      color: var(--navy);
+      user-select: none;
+    }
+
+    .drag-item:active {
+      cursor: grabbing;
+    }
+
+    .drag-item.assigned {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .dropzone {
+      border: 2px dashed rgba(19, 41, 75, 0.2);
+      border-radius: 14px;
+      padding: 0.9rem 1rem;
+      background: rgba(19, 41, 75, 0.05);
+      min-height: 96px;
+      display: grid;
+      gap: 0.45rem;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .dropzone strong {
+      color: var(--navy);
+      font-size: 0.95rem;
+    }
+
+    .dropzone p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .drop-placeholder {
+      font-style: italic;
+      color: rgba(19, 41, 75, 0.55);
+    }
+
+    .dropzone.filled {
+      border-style: solid;
+      border-color: rgba(232, 74, 39, 0.35);
+      background: rgba(232, 74, 39, 0.08);
+    }
+
+    .dropzone.drag-over {
+      border-color: var(--navy);
+      background: rgba(19, 41, 75, 0.12);
+    }
+
+    .dropzone.correct {
+      border-color: rgba(36, 148, 79, 0.6);
+      background: rgba(36, 148, 79, 0.12);
+    }
+
+    .dropzone.incorrect {
+      border-color: rgba(232, 74, 39, 0.6);
+      background: rgba(232, 74, 39, 0.15);
+    }
+
+    .check-button {
+      margin-top: 1.5rem;
+      padding: 0.7rem 1.45rem;
+      border-radius: 12px;
+      border: none;
+      background: var(--navy);
+      color: #ffffff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .check-button:hover {
+      background: #0f1e3b;
+      transform: translateY(-1px);
+    }
+
+    .match-feedback {
+      margin-top: 1rem;
+      font-weight: 600;
+      color: var(--navy);
     }
 
     footer {
       padding: 2rem 5vw 3rem;
       color: var(--muted);
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       text-align: center;
-      border-top: 1px solid rgba(92, 240, 255, 0.08);
+      border-top: 1px solid rgba(19, 41, 75, 0.12);
+      background: rgba(255, 255, 255, 0.6);
     }
 
     a {
-      color: rgba(92, 240, 255, 0.9);
+      color: var(--orange);
     }
   </style>
 </head>
@@ -465,14 +642,34 @@
     </section>
 
     <section class="panel">
-      <h2>Terminology Playground</h2>
-      <p>Hover over a card to reveal design cues and analogies that make these technical ideas memorable for new AI explorers.</p>
-      <div class="term-grid" id="term-grid"></div>
+      <div class="tab-header">
+        <div>
+          <h2>Learning Activities</h2>
+          <p class="tab-intro">Choose an activity to help learners connect terminology with real-world reasoning tasks.</p>
+        </div>
+        <div class="tab-buttons">
+          <button class="tab-button active" data-tab="terminology">Terminology Playground</button>
+          <button class="tab-button" data-tab="model-match">Model Match Drag &amp; Drop</button>
+        </div>
+      </div>
+      <div class="tab-content active" id="terminology-tab">
+        <p>Hover over a card to reveal design cues and analogies that make these technical ideas memorable for new AI explorers.</p>
+        <div class="term-grid" id="term-grid"></div>
+      </div>
+      <div class="tab-content" id="model-match-tab">
+        <p class="tab-description">Drag the model name that best matches each classroom-friendly hint. Click a hint to clear it if you want to try again.</p>
+        <div class="drag-drop-container">
+          <div class="draggable-list" id="model-draggables" aria-label="Model names to drag"></div>
+          <div class="dropzone-list" id="model-dropzones" aria-label="Drop targets with hints"></div>
+        </div>
+        <button class="check-button" id="check-matches">Check my matches</button>
+        <div class="match-feedback" id="match-feedback"></div>
+      </div>
     </section>
   </main>
 
   <footer>
-    Designed to help students and educators build intuition about generative AI systems. Updated May 2024. Crafted with ❤️ by the CITL innovation sandbox.
+    Designed to help students and educators build intuition about generative AI systems. Updated May 2024. Crafted by the CITL innovation sandbox.
   </footer>
 
   <script>
@@ -637,6 +834,26 @@
       }
     ];
 
+    const modelMatch = [
+      {
+        model: 'GPT-4o',
+        hint: 'OpenAI release that pairs extended context with audio and vision for lively tutoring demos.'
+      },
+      {
+        model: 'Claude 3 Haiku',
+        hint: 'Anthropic model tuned for fast, budget-friendly classroom checks for understanding.'
+      },
+      {
+        model: 'Llama 3 70B',
+        hint: 'Open-weight option from Meta that universities can fine-tune for campus-specific copilots.'
+      },
+      {
+        model: 'Gemini 1.5 Flash',
+        hint: 'Google multimodal tier designed for cost-efficient prototyping and quick multimedia responses.'
+      }
+    ];
+
+
     const scenarios = {
       'Creative Writing Studio': {
         highlight: 'Spotlight narrative-friendly models and talk about multimodal storytelling.',
@@ -685,6 +902,15 @@
     const scenarioPills = document.getElementById('scenario-pills');
     const scenarioContent = document.getElementById('scenario-content');
     const termGrid = document.getElementById('term-grid');
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const draggableList = document.getElementById('model-draggables');
+    const dropzoneList = document.getElementById('model-dropzones');
+    const checkMatchesButton = document.getElementById('check-matches');
+    const matchFeedback = document.getElementById('match-feedback');
+
+    let dropzoneElements = [];
+    let activeDragModel = '';
 
     const filterDimensions = {
       Family: models.map(m => m.family),
@@ -864,6 +1090,170 @@
       `;
     }
 
+    function setupTabs() {
+      if (!tabButtons.length) return;
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          if (button.classList.contains('active')) return;
+          tabButtons.forEach(btn => btn.classList.remove('active'));
+          tabContents.forEach(content => content.classList.remove('active'));
+          button.classList.add('active');
+          const target = document.getElementById(`${button.dataset.tab}-tab`);
+          if (target) {
+            target.classList.add('active');
+          }
+        });
+      });
+    }
+
+    function setupModelMatch() {
+      if (!draggableList || !dropzoneList) return;
+      draggableList.innerHTML = '';
+      dropzoneList.innerHTML = '';
+      if (matchFeedback) matchFeedback.textContent = '';
+
+      const shuffled = [...modelMatch].sort(() => Math.random() - 0.5);
+
+      shuffled.forEach(item => {
+        const drag = document.createElement('div');
+        drag.className = 'drag-item';
+        drag.textContent = item.model;
+        drag.draggable = true;
+        drag.dataset.model = item.model;
+        drag.setAttribute('role', 'button');
+        drag.setAttribute('aria-grabbed', 'false');
+        drag.addEventListener('dragstart', handleDragStart);
+        drag.addEventListener('dragend', handleDragEnd);
+        draggableList.appendChild(drag);
+      });
+
+      dropzoneElements = modelMatch.map((item, index) => {
+        const zone = document.createElement('div');
+        zone.className = 'dropzone';
+        zone.dataset.answer = item.model;
+        zone.dataset.current = '';
+        zone.innerHTML = `
+          <strong>Hint ${index + 1}</strong>
+          <p>${item.hint}</p>
+          <span class="drop-placeholder">Drag a model here</span>
+        `;
+        zone.addEventListener('dragover', handleDragOver);
+        zone.addEventListener('dragleave', handleDragLeave);
+        zone.addEventListener('drop', handleDrop);
+        zone.addEventListener('click', () => clearZone(zone));
+        dropzoneList.appendChild(zone);
+        return zone;
+      });
+    }
+
+    function handleDragStart(event) {
+      const model = event.target.dataset.model;
+      activeDragModel = model;
+      event.dataTransfer.setData('text/plain', model);
+      event.dataTransfer.effectAllowed = 'move';
+      event.target.classList.add('dragging');
+    }
+
+    function handleDragEnd(event) {
+      event.target.classList.remove('dragging');
+      activeDragModel = '';
+      dropzoneElements.forEach(zone => zone.classList.remove('drag-over'));
+    }
+
+    function handleDragOver(event) {
+      event.preventDefault();
+      event.dataTransfer.dropEffect = 'move';
+      event.currentTarget.classList.add('drag-over');
+    }
+
+    function handleDragLeave(event) {
+      event.currentTarget.classList.remove('drag-over');
+    }
+
+    function handleDrop(event) {
+      event.preventDefault();
+      const zone = event.currentTarget;
+      zone.classList.remove('drag-over');
+      const modelName = event.dataTransfer.getData('text/plain') || activeDragModel;
+      if (!modelName) return;
+      assignModelToZone(zone, modelName);
+    }
+
+    function assignModelToZone(zone, modelName) {
+      const dragItem = Array.from(document.querySelectorAll('.drag-item')).find(item => item.dataset.model === modelName);
+      if (!dragItem) return;
+
+      if (zone.dataset.current === modelName) return;
+
+      if (zone.dataset.current) {
+        const previousItem = Array.from(document.querySelectorAll('.drag-item')).find(item => item.dataset.model === zone.dataset.current);
+        if (previousItem) {
+          previousItem.classList.remove('assigned');
+          previousItem.draggable = true;
+          previousItem.setAttribute('aria-grabbed', 'false');
+        }
+      }
+
+      const occupiedZone = dropzoneElements.find(el => el.dataset.current === modelName);
+      if (occupiedZone) {
+        clearZone(occupiedZone, true);
+      }
+
+      dragItem.classList.add('assigned');
+      dragItem.draggable = false;
+      dragItem.setAttribute('aria-grabbed', 'true');
+
+      zone.dataset.current = modelName;
+      zone.classList.add('filled');
+      zone.classList.remove('correct', 'incorrect');
+      const placeholder = zone.querySelector('.drop-placeholder');
+      if (placeholder) placeholder.textContent = modelName;
+      if (matchFeedback) matchFeedback.textContent = '';
+    }
+
+    function clearZone(zone, silent = false) {
+      const current = zone.dataset.current;
+      if (current) {
+        const dragItem = Array.from(document.querySelectorAll('.drag-item')).find(item => item.dataset.model === current);
+        if (dragItem) {
+          dragItem.classList.remove('assigned');
+          dragItem.draggable = true;
+          dragItem.setAttribute('aria-grabbed', 'false');
+        }
+      }
+      zone.dataset.current = '';
+      zone.classList.remove('filled', 'correct', 'incorrect');
+      const placeholder = zone.querySelector('.drop-placeholder');
+      if (placeholder) placeholder.textContent = 'Drag a model here';
+      if (!silent && matchFeedback) {
+        matchFeedback.textContent = '';
+      }
+    }
+
+    function evaluateMatches() {
+      if (!dropzoneElements.length) return;
+      let correct = 0;
+      dropzoneElements.forEach(zone => {
+        zone.classList.remove('correct', 'incorrect');
+        const current = zone.dataset.current;
+        if (current && current === zone.dataset.answer) {
+          zone.classList.add('correct');
+          correct += 1;
+        } else {
+          zone.classList.add('incorrect');
+        }
+      });
+
+      if (correct === modelMatch.length) {
+        if (matchFeedback) matchFeedback.textContent = 'Great job! Every hint matches the right model.';
+      } else {
+        if (matchFeedback) matchFeedback.textContent = `You matched ${correct} of ${modelMatch.length}. Keep exploring the hints and try again.`;
+      }
+    }
+    if (checkMatchesButton) {
+      checkMatchesButton.addEventListener('click', evaluateMatches);
+    }
+
     function renderTerminology() {
       terminology.forEach(entry => {
         const card = document.createElement('article');
@@ -882,6 +1272,8 @@
     setupLineage();
     renderGallery();
     renderScenarios();
+    setupTabs();
+    setupModelMatch();
     renderTerminology();
   </script>
 </body>
