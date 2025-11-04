@@ -179,6 +179,10 @@
       border: 0;
     }
 
+    [hidden] {
+      display: none !important;
+    }
+
     @media (max-width: 640px) {
       .flip-card {
         height: 240px;
@@ -466,6 +470,67 @@
   </main>
 
   <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tabList = document.querySelector('.tabs');
+      const tabs = tabList ? Array.from(tabList.querySelectorAll('[role="tab"]')) : [];
+      const panels = Array.from(document.querySelectorAll('[role="tabpanel"]'));
+
+      const activateTab = targetTab => {
+        if (!targetTab) return;
+        const targetId = targetTab.getAttribute('aria-controls');
+        if (!targetId) return;
+
+        tabs.forEach(tab => {
+          const isActive = tab === targetTab;
+          tab.classList.toggle('active', isActive);
+          tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+          tab.setAttribute('tabindex', isActive ? '0' : '-1');
+        });
+
+        panels.forEach(panel => {
+          const shouldShow = panel.id === targetId;
+          panel.hidden = !shouldShow;
+          panel.setAttribute('aria-hidden', shouldShow ? 'false' : 'true');
+        });
+
+        targetTab.focus();
+      };
+
+      const handleKeydown = event => {
+        const { key } = event;
+        const currentIndex = tabs.findIndex(tab => tab.getAttribute('aria-selected') === 'true');
+        if (currentIndex === -1) return;
+
+        let nextIndex = currentIndex;
+
+        if (key === 'ArrowRight' || key === 'ArrowDown') {
+          nextIndex = (currentIndex + 1) % tabs.length;
+        } else if (key === 'ArrowLeft' || key === 'ArrowUp') {
+          nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+        } else if (key === 'Home') {
+          nextIndex = 0;
+        } else if (key === 'End') {
+          nextIndex = tabs.length - 1;
+        } else {
+          return;
+        }
+
+        event.preventDefault();
+        activateTab(tabs[nextIndex]);
+      };
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => activateTab(tab));
+        tab.addEventListener('keydown', handleKeydown);
+      });
+
+      const initiallySelected = tabs.find(tab => tab.getAttribute('aria-selected') === 'true');
+      if (initiallySelected) {
+        activateTab(initiallySelected);
+      } else if (tabs.length) {
+        activateTab(tabs[0]);
+      }
+    });
     const tabList = document.querySelector('.tabs');
     const tabs = tabList ? Array.from(tabList.querySelectorAll('[role="tab"]')) : [];
     const panels = Array.from(document.querySelectorAll('[role="tabpanel"]'));
