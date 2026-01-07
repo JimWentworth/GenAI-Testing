@@ -5,35 +5,31 @@ const pages = [
     id: 'overview',
     title: 'Overview',
     href: 'index.html',
-    trackProgress: false,
   },
   {
     id: 'terms',
     title: 'AI Terminology',
     href: 'terminology.html',
-    trackProgress: false,
   },
+];
+
+const coreConcepts = [
   {
     id: 'prompts-temperature',
     title: 'Prompts & Temperature',
     href: 'activity-prompts-temperature.html',
-    trackProgress: true,
   },
   {
     id: 'hallucinations-rag',
     title: 'Hallucinations & RAG',
     href: 'activity-hallucinations-rag.html',
-    trackProgress: true,
   },
   {
     id: 'tokens-context',
     title: 'Tokens & Context Windows',
     href: 'activity-tokens-context.html',
-    trackProgress: true,
   },
 ];
-
-const activityLookup = pages.filter((page) => page.trackProgress);
 
 const getProgress = () => {
   const saved = localStorage.getItem(STORAGE_KEY);
@@ -125,9 +121,6 @@ const initNavigation = () => {
     const link = document.createElement('a');
     link.href = page.href;
     link.textContent = page.title;
-    if (page.trackProgress) {
-      link.dataset.activityLink = page.id;
-    }
 
     if (currentPage === page.id) {
       link.classList.add('active');
@@ -135,6 +128,37 @@ const initNavigation = () => {
 
     navContainer.appendChild(link);
   });
+
+  const dropdownGroup = document.createElement('div');
+  dropdownGroup.className = 'nav-group';
+
+  const dropdownToggle = document.createElement('a');
+  dropdownToggle.href = '#';
+  dropdownToggle.className = 'nav-dropdown-toggle';
+  dropdownToggle.textContent = 'Core Concepts';
+  dropdownToggle.setAttribute('aria-haspopup', 'true');
+  dropdownToggle.setAttribute('aria-expanded', 'false');
+  dropdownToggle.addEventListener('click', (event) => {
+    event.preventDefault();
+  });
+
+  const dropdownMenu = document.createElement('div');
+  dropdownMenu.className = 'nav-dropdown';
+
+  coreConcepts.forEach((page) => {
+    const link = document.createElement('a');
+    link.href = page.href;
+    link.textContent = page.title;
+    link.dataset.activityLink = page.id;
+    if (currentPage === page.id) {
+      link.classList.add('active');
+    }
+    dropdownMenu.appendChild(link);
+  });
+
+  dropdownGroup.appendChild(dropdownToggle);
+  dropdownGroup.appendChild(dropdownMenu);
+  navContainer.appendChild(dropdownGroup);
 
   applyCompletionIndicators();
 };

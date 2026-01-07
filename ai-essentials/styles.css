@@ -67,6 +67,46 @@ body.terms-page {
   gap: 6px;
 }
 
+.nav-group {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-dropdown-toggle::after {
+  content: '▾';
+  font-size: 0.9em;
+}
+
+.nav-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  background: white;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  min-width: 220px;
+  padding: 8px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 10;
+}
+
+.nav-dropdown a {
+  border-radius: 10px;
+  border: 1px solid transparent;
+  padding: 8px 10px;
+  justify-content: space-between;
+}
+
+.nav-group:hover .nav-dropdown,
+.nav-group:focus-within .nav-dropdown {
+  display: flex;
+}
+
 .site-nav a:hover,
 .site-nav a.active {
   border-color: var(--illini-orange);
@@ -179,8 +219,7 @@ body.terms-page {
 }
 
 .duration-badge,
-.category-badge,
-.tool-mini-badge {
+.category-badge {
   padding: 4px 12px;
   border-radius: 12px;
   font-size: 0.85em;
@@ -197,10 +236,6 @@ body.terms-page {
   color: white;
 }
 
-.tool-mini-badge {
-  background: #e8f5e9;
-  color: #2e7d32;
-}
 
 .prompt-box {
   background: #fff;
