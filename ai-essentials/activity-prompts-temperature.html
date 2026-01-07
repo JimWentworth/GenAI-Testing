@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prompts & Temperature - AI Essentials</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="prompts-temperature">
+  <header class="header">
+    <h1>Prompts &amp; Temperature: The Foundation</h1>
+    <p>AI Essentials for Faculty</p>
+  </header>
+
+  <nav class="site-nav">
+    <div class="nav-inner" data-nav></div>
+  </nav>
+
+  <main class="container">
+    <section class="intro">
+      <h2>Core Concepts</h2>
+      <p><strong>Prompt:</strong> The input text or instructions given to an AI model to guide its response or behavior. The quality and specificity of your prompt directly affects the quality of the AI's output.</p>
+
+      <p><strong>Temperature:</strong> A parameter that controls randomness in text generation. Lower values (0.0-0.3) make output focused and deterministic—the model will choose the most probable next words, resulting in consistent, predictable responses. Higher values (0.7-1.0) increase creativity and variability—the model considers less probable options, producing more diverse and surprising outputs.</p>
+
+      <p><strong>Important Note:</strong> In most AI chat interfaces like ChatGPT and Copilot, you don't directly control temperature—it's preset by the system. However, you can <em>influence</em> how the model behaves through your prompts. The model adjusts its randomness based on what you're asking for.</p>
+
+      <div class="activity-meta">
+        <span class="duration-badge">15 min</span>
+        <span class="category-badge">Core Concepts</span>
+      </div>
+
+      <div style="margin-top: 15px;">
+        <a href="https://chat.openai.com/" target="_blank" class="tool-badge">ChatGPT</a>
+        <a href="https://copilot.microsoft.com/" target="_blank" class="tool-badge">Microsoft Copilot</a>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Exercise: Observe Temperature Effects in Real Tools</h2>
+      <ol class="steps">
+        <li>
+          <strong>Test with a factual prompt (lower temperature behavior)</strong>
+          <p style="margin-top: 10px;">Start with a prompt that requests factual, straightforward information:</p>
+          <div class="prompt-box" style="margin-top: 10px;">
+            <div class="prompt-text" id="prompt1">Explain quantum entanglement to an undergraduate physics student in 3 sentences.</div>
+            <button class="copy-button" data-copy="prompt1">Copy Prompt</button>
+          </div>
+          <p style="margin-top: 10px;">Click "regenerate" 3 times and observe: The core facts stay the same, but phrasing varies slightly. This is low-temperature behavior—consistent information with minor stylistic changes.</p>
+        </li>
+        <li>
+          <strong>Test with a creative prompt (higher temperature behavior)</strong>
+          <div class="prompt-box" style="margin-top: 10px;">
+            <div class="prompt-text" id="prompt2">Write a creative opening line for a research paper about climate change impacts on migration patterns.</div>
+            <button class="copy-button" data-copy="prompt2">Copy Prompt</button>
+          </div>
+          <p style="margin-top: 10px;">Regenerate this 3 times and observe: You get very different opening lines—some formal, some dramatic, completely different framing.</p>
+        </li>
+        <li>
+          <strong>Experiment with prompt phrasing to influence temperature</strong>
+          <p style="margin-top: 10px;">Try these variations and notice how outputs differ:</p>
+          <div class="prompt-box" style="margin-top: 10px;">
+            <div class="prompt-text" id="prompt3">Provide the standard definition of machine learning.</div>
+            <button class="copy-button" data-copy="prompt3">Copy Prompt</button>
+          </div>
+          <p style="margin-top: 10px;">vs.</p>
+          <div class="prompt-box" style="margin-top: 10px;">
+            <div class="prompt-text" id="prompt4">Brainstorm 5 creative ways to explain machine learning to a 10-year-old.</div>
+            <button class="copy-button" data-copy="prompt4">Copy Prompt</button>
+          </div>
+          <p style="margin-top: 10px;">The first prompt triggers lower temperature behavior. The second triggers higher temperature behavior.</p>
+        </li>
+        <li>
+          <strong>Advanced: Test with ambiguous prompts</strong>
+          <div class="prompt-box" style="margin-top: 10px;">
+            <div class="prompt-text" id="prompt5">Write an introduction for a paper on social media's effects.</div>
+            <button class="copy-button" data-copy="prompt5">Copy Prompt</button>
+          </div>
+          <p style="margin-top: 10px;">Regenerate several times. Because this prompt is ambiguous, you'll see high variation.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2 class="section-title">How to Take Advantage of Temperature Variation</h2>
+      <div class="intro">
+        <h3>When You Want Consistency (Low Temperature Behavior)</h3>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li>Request "standard," "technical," "precise," or "accurate" information</li>
+          <li>Ask for definitions, explanations, or step-by-step procedures</li>
+          <li>Be very specific about what you want</li>
+        </ul>
+        <p style="margin-top: 15px;"><strong>Best for:</strong> Technical documentation, grading rubrics, factual summaries, instructional content</p>
+      </div>
+
+      <div class="intro">
+        <h3>When You Want Variety (High Temperature Behavior)</h3>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li>Request "creative," "brainstorm," "innovative," or "multiple options"</li>
+          <li>Ask for alternatives, variations, or diverse perspectives</li>
+          <li>Use words like "imagine," "explore," "generate ideas"</li>
+        </ul>
+        <p style="margin-top: 15px;"><strong>Best for:</strong> Brainstorming, generating multiple versions, creative writing, exploring possibilities</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Understanding Prompt Quality</h2>
+      <p style="margin-bottom: 10px;">Click each card to compare:</p>
+
+      <div class="flip-card-container">
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <h4>Vague Prompts</h4>
+              <p>"Tell me about AI"</p>
+              <p style="font-size: 0.8em; margin-top: 20px;">Click to see details →</p>
+            </div>
+            <div class="flip-card-back">
+              <h4>Vague Prompts</h4>
+              <ul>
+                <li><strong>Result:</strong> Generic, surface-level responses</li>
+                <li><strong>Problem:</strong> AI doesn't know your context, audience, or purpose</li>
+                <li><strong>Use when:</strong> You're just exploring and want a broad overview</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <h4>Specific Prompts</h4>
+              <p>"Explain transformers in NLP for grad students"</p>
+              <p style="font-size: 0.8em; margin-top: 20px;">Click to see details →</p>
+            </div>
+            <div class="flip-card-back">
+              <h4>Specific Prompts</h4>
+              <ul>
+                <li><strong>Result:</strong> Targeted, appropriate-level responses</li>
+                <li><strong>Benefit:</strong> AI tailors content to your needs</li>
+                <li><strong>Use when:</strong> You need precise, actionable information</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="flip-instruction">Click the cards above to flip them and see more details</p>
+    </section>
+
+    <section>
+      <h2 class="section-title">Reflection Questions</h2>
+      <ul>
+        <li>When would you want consistent outputs in your work?</li>
+        <li>When would variation be beneficial?</li>
+        <li>How does output variation relate to academic integrity?</li>
+        <li>What happens if you try to use a student's submitted text as a prompt?</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="section-title">Key Takeaways</h2>
+      <ul>
+        <li>You can't directly control temperature in ChatGPT/Copilot, but your prompt phrasing influences the model's behavior.</li>
+        <li>Factual/technical prompts trigger more consistent responses; creative prompts trigger more variation.</li>
+        <li>Use the regenerate button strategically—generate multiple options for creative tasks.</li>
+        <li>Being specific in your prompts reduces unwanted variation and improves output quality.</li>
+      </ul>
+    </section>
+
+    <section class="completion-section">
+      <h4>Mark as Complete</h4>
+      <p style="margin-bottom: 15px;">Have you finished this activity?</p>
+      <button class="mark-complete-btn" data-activity-id="prompts-temperature">Mark as Complete</button>
+      <div class="completion-feedback">
+        <strong>✓ Activity completed!</strong> Great work. Your progress has been saved.
+      </div>
+    </section>
+  </main>
+
+  <script src="shared.js" defer></script>
+</body>
+</html>
