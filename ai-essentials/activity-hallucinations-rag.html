@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hallucinations & RAG - AI Essentials</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="hallucinations-rag">
+  <header class="header">
+    <h1>Identifying Hallucinations &amp; Using RAG</h1>
+    <p>AI Essentials for Faculty</p>
+  </header>
+
+  <nav class="site-nav">
+    <div class="nav-inner" data-nav></div>
+  </nav>
+
+  <main class="container">
+    <section class="intro">
+      <h2>Core Concepts</h2>
+      <p><strong>Hallucinations:</strong> When AI models confidently generate false or fabricated information. This happens because LLMs predict the next word based on patterns in their training data—they don't access a truth database or verify facts.</p>
+
+      <p><strong>RAG (Retrieval-Augmented Generation):</strong> A two-step process that reduces hallucinations by combining search with generation. First, the system retrieves relevant information from external sources. Second, it provides this retrieved information to the LLM as context when generating responses.</p>
+
+      <p><strong>Key Difference:</strong> ChatGPT relies primarily on training patterns from its knowledge cutoff date, making it prone to hallucinations about recent events or obscure topics. Perplexity searches the web first and provides cited answers, reducing hallucinations. NotebookLM only uses your uploaded documents, grounding responses in your sources.</p>
+
+      <div class="activity-meta">
+        <span class="duration-badge">20 min</span>
+        <span class="category-badge">Core Concepts</span>
+        <span class="tool-mini-badge">ChatGPT</span>
+        <span class="tool-mini-badge">Perplexity</span>
+        <span class="tool-mini-badge">NotebookLM</span>
+      </div>
+
+      <div style="margin-top: 15px;">
+        <a href="https://chat.openai.com/" target="_blank" class="tool-badge">ChatGPT</a>
+        <a href="https://www.perplexity.ai/" target="_blank" class="tool-badge">Perplexity</a>
+        <a href="https://notebooklm.google.com/" target="_blank" class="tool-badge">NotebookLM</a>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Exercise: Compare AI with and without RAG</h2>
+      <ol class="steps">
+        <li>
+          <strong>Ask ChatGPT about a recent, obscure study</strong>
+          <p style="margin-top: 10px;">Test ChatGPT's tendency to hallucinate by asking about something specific and recent:</p>
+          <div class="prompt-box" style="margin-top: 10px;">
+            <div class="prompt-text" id="rag-prompt1">Tell me about the 2023 study on [insert your research area] published in [insert specific journal]. What were the main findings?</div>
+            <button class="copy-button" data-copy="rag-prompt1">Copy Prompt</button>
+          </div>
+          <p style="margin-top: 10px;">Observe: ChatGPT may confidently provide details about a study that doesn't exist, or conflate multiple studies.</p>
+        </li>
+        <li>
+          <strong>Ask the same question in Perplexity</strong>
+          <p style="margin-top: 10px;">Now try the identical query in Perplexity, which uses RAG by searching the web first.</p>
+          <p style="margin-top: 10px;">Observe: Perplexity searches current sources and provides citations. If it can't find the study, it will say so.</p>
+        </li>
+        <li>
+          <strong>Compare the outputs</strong>
+          <ul>
+            <li>Does it provide specific citations or sources?</li>
+            <li>Can you verify the information through the provided sources?</li>
+            <li>How confident does each response sound?</li>
+            <li>Which would you trust for academic work?</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Advanced: Test NotebookLM with your own documents</strong>
+          <p style="margin-top: 10px;">Upload 3-5 research papers or course materials to NotebookLM, then ask questions about them.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2 class="section-title">Understanding the Difference</h2>
+      <p style="margin-bottom: 10px;">Click each card to see how RAG changes AI behavior:</p>
+
+      <div class="flip-card-container">
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <h4>Without RAG</h4>
+              <p>ChatGPT (Standard Mode)</p>
+              <p style="font-size: 0.8em; margin-top: 20px;">Click to see details →</p>
+            </div>
+            <div class="flip-card-back">
+              <h4>Without RAG</h4>
+              <ul>
+                <li><strong>Pros:</strong> Fast, creative, good for brainstorming</li>
+                <li><strong>Cons:</strong> May hallucinate facts, no source verification</li>
+                <li><strong>Best for:</strong> Drafting, ideation, general knowledge</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <h4>With RAG</h4>
+              <p>Perplexity / NotebookLM</p>
+              <p style="font-size: 0.8em; margin-top: 20px;">Click to see details →</p>
+            </div>
+            <div class="flip-card-back">
+              <h4>With RAG</h4>
+              <ul>
+                <li><strong>Pros:</strong> Cited answers, verifiable sources, current info</li>
+                <li><strong>Cons:</strong> May miss nuance, limited to available sources</li>
+                <li><strong>Best for:</strong> Research, fact-checking, current events</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="flip-instruction">Click the cards above to flip them and see more details</p>
+    </section>
+
+    <section>
+      <h2 class="section-title">Reflection Questions</h2>
+      <ul>
+        <li>When would you use a tool without RAG versus one with RAG?</li>
+        <li>How does this impact your evaluation of student work that may use AI?</li>
+        <li>What strategies can you teach students to verify AI-generated information?</li>
+        <li>How might NotebookLM change the way you approach literature reviews?</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="section-title">Key Takeaways</h2>
+      <ul>
+        <li>Hallucinations occur because LLMs predict patterns, not truth.</li>
+        <li>RAG reduces hallucinations by retrieving and citing sources before generating responses.</li>
+        <li>ChatGPT is best for creative/drafting tasks; Perplexity/NotebookLM are best for research and fact-checking.</li>
+        <li>Always verify AI-generated facts, especially for academic or research purposes.</li>
+      </ul>
+    </section>
+
+    <section class="completion-section">
+      <h4>Mark as Complete</h4>
+      <p style="margin-bottom: 15px;">Have you finished this activity?</p>
+      <button class="mark-complete-btn" data-activity-id="hallucinations-rag">Mark as Complete</button>
+      <div class="completion-feedback">
+        <strong>✓ Activity completed!</strong> Great work. Your progress has been saved.
+      </div>
+    </section>
+  </main>
+
+  <script src="shared.js" defer></script>
+</body>
+</html>

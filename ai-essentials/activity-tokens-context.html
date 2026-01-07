@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tokens & Context Windows - AI Essentials</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="tokens-context">
+  <header class="header">
+    <h1>Tokens &amp; Context Windows: Understanding Limits</h1>
+    <p>AI Essentials for Faculty</p>
+  </header>
+
+  <nav class="site-nav">
+    <div class="nav-inner" data-nav></div>
+  </nav>
+
+  <main class="container">
+    <section class="intro">
+      <h2>Core Concepts</h2>
+      <p><strong>Tokens:</strong> Basic units of text that AI models process. A typical English word is 1-2 tokens. Numbers, punctuation, and spaces also count as tokens. This matters because AI models have limits on how many tokens they can process at once.</p>
+
+      <p><strong>Context Window:</strong> The maximum amount of text (measured in tokens) that an AI model can consider at one time, including both your input and the model's output. Once you exceed the context window, the model starts "forgetting" earlier parts of the conversation.</p>
+
+      <p><strong>Key Insight:</strong> Different AI tools have dramatically different context windows. ChatGPT handles ~128,000 tokens (~96,000 words or ~300 pages). Claude handles ~200,000 tokens (~150,000 words or ~500 pages).</p>
+
+      <div class="activity-meta">
+        <span class="duration-badge">18 min</span>
+        <span class="category-badge">Core Concepts</span>
+        <span class="tool-mini-badge">Claude</span>
+        <span class="tool-mini-badge">ChatGPT</span>
+      </div>
+
+      <div style="margin-top: 15px;">
+        <a href="https://claude.ai/" target="_blank" class="tool-badge">Claude</a>
+        <a href="https://chat.openai.com/" target="_blank" class="tool-badge">ChatGPT</a>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Exercise: Test Context Window Limits</h2>
+      <ol class="steps">
+        <li>
+          <strong>Test with a short document (2-3 pages)</strong>
+          <p style="margin-top: 10px;">Upload or paste a short research paper, article, or document into ChatGPT or Claude.</p>
+          <div class="prompt-box" style="margin-top: 10px;">
+            <div class="prompt-text" id="context-prompt1">Summarize the main argument and key findings of this document in 3 paragraphs. Then identify any methodological limitations discussed by the author.</div>
+            <button class="copy-button" data-copy="context-prompt1">Copy Prompt</button>
+          </div>
+          <p style="margin-top: 10px;">Observe: The AI should handle this easily and reference specific sections accurately.</p>
+        </li>
+        <li>
+          <strong>Test with a longer document (10-20 pages)</strong>
+          <p style="margin-top: 10px;">Upload a longer paper, book chapter, or report.</p>
+          <div class="prompt-box" style="margin-top: 10px;">
+            <div class="prompt-text" id="context-prompt2">How does the argument in section 2 connect to the conclusions in the final section? Provide specific examples from both sections.</div>
+            <button class="copy-button" data-copy="context-prompt2">Copy Prompt</button>
+          </div>
+          <p style="margin-top: 10px;">Observe: Does the AI maintain accuracy across different sections? Can it connect ideas from the beginning and end?</p>
+        </li>
+        <li>
+          <strong>Test with an extremely long document (50+ pages) in Claude</strong>
+          <p style="margin-top: 10px;">Upload a dissertation chapter, book, or comprehensive report to Claude.</p>
+          <div class="prompt-box" style="margin-top: 10px;">
+            <div class="prompt-text" id="context-prompt3">Create a detailed outline of this document's structure, including all major sections and their key points. Then identify the 3 most important arguments made across the entire document.</div>
+            <button class="copy-button" data-copy="context-prompt3">Copy Prompt</button>
+          </div>
+          <p style="margin-top: 10px;">Observe: Even with a large context window, very long documents may lead to the AI emphasizing recent sections over earlier ones.</p>
+        </li>
+        <li>
+          <strong>Advanced: Test conversation length limits</strong>
+          <p style="margin-top: 10px;">Have an extended conversation with multiple back-and-forth exchanges (10+ turns). Then ask the AI to reference something from your first message.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2 class="section-title">Understanding Context Window Trade-offs</h2>
+      <div class="intro">
+        <h3>When Context Window Size Matters</h3>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li><strong>Analyzing long documents:</strong> Research papers, books, dissertations, comprehensive reports</li>
+          <li><strong>Comparing multiple sources:</strong> Literature reviews requiring synthesis across many papers</li>
+          <li><strong>Extended conversations:</strong> Multi-turn dialogues where context from early exchanges matters</li>
+          <li><strong>Complex projects:</strong> Tasks requiring the AI to reference many different pieces of information</li>
+        </ul>
+        <p style="margin-top: 15px;"><strong>Example:</strong> Claude's 200K token window can handle an entire PhD dissertation (~500 pages) in one conversation, while ChatGPT's 128K window might require breaking it into chunks.</p>
+      </div>
+
+      <div class="intro">
+        <h3>⚡ Pro Strategy: Chunking for Better Results</h3>
+        <p>Even with large context windows, breaking complex analysis into focused questions often yields better results than asking the AI to process everything at once. Instead of "Analyze this 300-page book," try:</p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li>"What are the main arguments in chapters 1-3?"</li>
+          <li>"How does the author's methodology in chapter 4 address the limitations identified earlier?"</li>
+          <li>"Synthesize the key findings from chapters 5-7 and explain how they support the thesis."</li>
+        </ul>
+        <p style="margin-top: 10px;">This approach works better because it directs the AI's attention to specific sections rather than trying to "see" the entire document at once.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Comparing Context Windows Across Tools</h2>
+      <div class="card-grid">
+        <div class="card-panel">
+          <h3>ChatGPT</h3>
+          <p style="font-size: 1.3em; font-weight: 700; color: var(--illini-orange); margin: 10px 0;">128,000 tokens</p>
+          <p style="font-size: 0.9em; color: #666;">~96,000 words</p>
+          <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">~300 pages</p>
+          <p style="font-size: 0.85em;"><strong>Best for:</strong> Most research papers, book chapters, typical academic documents</p>
+        </div>
+        <div class="card-panel">
+          <h3>Claude</h3>
+          <p style="font-size: 1.3em; font-weight: 700; color: var(--illini-orange); margin: 10px 0;">200,000 tokens</p>
+          <p style="font-size: 0.9em; color: #666;">~150,000 words</p>
+          <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">~500 pages</p>
+          <p style="font-size: 0.85em;"><strong>Best for:</strong> Entire books, dissertations, large codebases, comprehensive literature reviews</p>
+        </div>
+      </div>
+      <p style="margin-top: 20px; padding: 15px; background: #fff3e0; border-radius: 8px; border-left: 4px solid var(--illini-orange); font-size: 0.9em;">
+        <strong>⚠️ Important:</strong> Context window includes BOTH input and output. If you upload a 100,000 token document, the AI has only 28,000 tokens left (in ChatGPT) or 100,000 tokens left (in Claude) for its response and any follow-up conversation.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="section-title">Reflection Questions</h2>
+      <ul>
+        <li>What types of documents or tasks in your work would benefit from larger context windows?</li>
+        <li>Have you ever had an AI "forget" earlier parts of a conversation? What was happening with the context window?</li>
+        <li>When might it be better to break a task into smaller chunks rather than using a large context window?</li>
+        <li>How would you explain to students why an AI might give different answers when you upload a document all at once vs. in sections?</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="section-title">Key Takeaways</h2>
+      <ul>
+        <li>Tokens are the basic units AI models process—roughly 1.3 tokens per English word on average.</li>
+        <li>Context windows limit how much text an AI can "see" at once, including both input and output.</li>
+        <li>Different tools have different context window sizes—choose accordingly for your task.</li>
+        <li>Larger context doesn't always mean better understanding—focused questions often work better.</li>
+      </ul>
+    </section>
+
+    <section class="completion-section">
+      <h4>Mark as Complete</h4>
+      <p style="margin-bottom: 15px;">Have you finished this activity?</p>
+      <button class="mark-complete-btn" data-activity-id="tokens-context">Mark as Complete</button>
+      <div class="completion-feedback">
+        <strong>✓ Activity completed!</strong> Great work. Your progress has been saved.
+      </div>
+    </section>
+  </main>
+
+  <script src="shared.js" defer></script>
+</body>
+</html>
